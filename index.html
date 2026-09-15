@@ -1,0 +1,2273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Lumina English - 莫兰迪高阶英语工坊</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <style>
+        /* ==========================================================================
+           1. 莫兰迪大地色系设计规范 (Morandi Earth Tones Design System)
+           ========================================================================== */
+        :root {
+            /* 莫兰迪大地温润底色 */
+            --bg-body: #f6f3ed;
+            --bg-gradient: radial-gradient(circle at 10% 10%, #fbf9f5 0%, #f3eee5 100%);
+            --bg-surface: #ffffff;
+            --bg-card: #ffffff;
+            --bg-subtle: #efe9de;
+            --bg-accent-soft: #f4ede4;
+            
+            /* 边框体系 (陶泥与粗石纹理感) */
+            --border-color: #e2dcce;
+            --border-soft: #ece7db;
+            --border-dark: #c5bcab;
+            --border-focus: #9e6f53;
+
+            /* 莫兰迪主色调：陶土茶褐 (Morandi Terracotta) */
+            --primary: #9b674d;
+            --primary-hover: #85533b;
+            --primary-light: #f6eee7;
+            --primary-border: #dac5b6;
+            --primary-glow: rgba(155, 103, 77, 0.15);
+
+            /* 莫兰迪正向状态色：灰岩鼠尾草绿 (Morandi Sage Green) */
+            --success: #677d6b;
+            --success-hover: #536757;
+            --success-light: #eff4f0;
+            --success-border: #bfcebe;
+            --success-glow: rgba(103, 125, 107, 0.16);
+
+            /* 莫兰迪辅助色：烟灰雾霭蓝 (Morandi Slate Blue) */
+            --slate: #6b7c8c;
+            --slate-light: #ecf1f5;
+            --slate-border: #c2cdd7;
+
+            /* 莫兰迪暖砂与落日色 (Morandi Sand & Warm Ochre) */
+            --sand: #b8987b;
+            --sand-light: #f7f3ec;
+            --sand-border: #d8c6b3;
+
+            /* 莫兰迪提示色 (Muted Amber & Coral) */
+            --warning: #b87b51;
+            --warning-light: #faf0e7;
+            --danger: #b35959;
+            --danger-light: #faeaea;
+
+            /* 文字体系：深陶黑与暖炭灰 */
+            --text-primary: #2e2926;
+            --text-secondary: #6e6760;
+            --text-tertiary: #9f978d;
+            --text-inverse: #ffffff;
+
+            /* 尺寸与圆角 */
+            --card-radius: 22px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --radius-pill: 9999px;
+
+            /* 细腻柔和的环境光阴影 */
+            --shadow-sm: 0 2px 5px rgba(80, 70, 60, 0.04);
+            --shadow-md: 0 6px 18px -3px rgba(80, 70, 60, 0.06), 0 2px 6px -1px rgba(80, 70, 60, 0.03);
+            --shadow-lg: 0 16px 36px -4px rgba(80, 70, 60, 0.08), 0 6px 16px -2px rgba(80, 70, 60, 0.04);
+            --shadow-card: 0 20px 40px -8px rgba(78, 64, 52, 0.09), 0 6px 16px -3px rgba(78, 64, 52, 0.05);
+
+            --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            --font-serif: "Playfair Display", "Songti SC", "SimSun", Georgia, serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            background-image: var(--bg-gradient);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+            letter-spacing: -0.01em;
+        }
+
+        /* 响应式主容器 */
+        .app-shell {
+            max-width: 1080px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 24px 20px 52px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        /* ==========================================================================
+           2. 顶部导航与数据概览
+           ========================================================================== */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            margin-bottom: 22px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-logo {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #a36f55 0%, #87553e 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 20px;
+            box-shadow: 0 6px 14px rgba(155, 103, 77, 0.25);
+            letter-spacing: 0;
+        }
+
+        .brand-title {
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-tag {
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 2px 7px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--primary-border);
+        }
+
+        .brand-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 1px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stats-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stat-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg-surface);
+            padding: 6px 13px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-color);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat-pill strong {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .stat-icon {
+            font-size: 14px;
+        }
+
+        .btn-reset-store {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .btn-reset-store:hover {
+            background: var(--bg-subtle);
+            color: var(--text-secondary);
+            border-color: var(--border-color);
+        }
+
+        /* ==========================================================================
+           3. 分类筛选与搜索导航栏 (新增分类系统)
+           ========================================================================== */
+        .category-nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .category-tabs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+        }
+        .category-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-tab {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 7px 14px;
+            border-radius: var(--radius-pill);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .category-tab:hover {
+            border-color: var(--sand-border);
+            color: var(--text-primary);
+            background: var(--sand-light);
+        }
+
+        .category-tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(155, 103, 77, 0.25);
+        }
+
+        .category-tab .tab-badge {
+            background: rgba(0, 0, 0, 0.08);
+            font-size: 11px;
+            padding: 1px 6px;
+            border-radius: 10px;
+        }
+        .category-tab.active .tab-badge {
+            background: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+        }
+
+        .deck-counter-badge {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .deck-counter-badge strong {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* ==========================================================================
+           4. 主网格布局 (卡片区 + 造句/AI纠错区)
+           ========================================================================== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.15fr;
+            gap: 28px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+
+        /* ==========================================================================
+           5. 3D 翻转单词卡片组件 (莫兰迪羊绒陶泥质感)
+           ========================================================================== */
+        .card-column {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .card-stage {
+            perspective: 1400px;
+            width: 100%;
+            height: 440px;
+        }
+
+        .card-flipper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.34, 1.25, 0.64, 1);
+            cursor: pointer;
+        }
+
+        .card-flipper.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow-card);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+            transition: border-color 0.25s, box-shadow 0.25s;
+            overflow: hidden;
+        }
+
+        .card-flipper:hover .card-face {
+            border-color: var(--sand-border);
+            box-shadow: 0 22px 46px -6px rgba(80, 68, 56, 0.11);
+        }
+
+        /* 卡片正面 */
+        .card-front {
+            transform: rotateY(0deg);
+            justify-content: space-between;
+        }
+
+        .card-header-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-tags-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge-cefr {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            padding: 3px 9px;
+            border-radius: 6px;
+            background-color: var(--slate-light);
+            color: var(--slate);
+            border: 1px solid var(--slate-border);
+        }
+
+        .badge-category {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background-color: var(--sand-light);
+            color: var(--sand);
+            border: 1px solid var(--sand-border);
+        }
+
+        .badge-pos {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .word-body-center {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin: auto 0;
+        }
+
+        .word-title {
+            font-size: 40px;
+            font-weight: 700;
+            letter-spacing: -0.8px;
+            color: var(--text-primary);
+            line-height: 1.1;
+            font-family: var(--font-sans);
+        }
+
+        .phonetic-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            font-size: 15px;
+            background: var(--bg-subtle);
+            padding: 5px 14px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-soft);
+        }
+
+        .btn-audio {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--primary);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .btn-audio:hover {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            transform: scale(1.08);
+        }
+
+        .btn-audio svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        /* 常用搭配速览 */
+        .collocations-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            margin-top: 4px;
+            max-width: 90%;
+        }
+
+        .collocation-chip {
+            font-size: 12px;
+            background: var(--bg-accent-soft);
+            color: var(--text-secondary);
+            padding: 2px 10px;
+            border-radius: 12px;
+            border: 1px solid var(--border-soft);
+            font-weight: 500;
+        }
+
+        .card-front-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-tertiary);
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-soft);
+        }
+
+        /* 卡片背面 */
+        .card-back {
+            transform: rotateY(180deg);
+            justify-content: space-between;
+            background: #fffcf8;
+            border-color: var(--sand-border);
+        }
+
+        .card-back-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto;
+            padding-right: 4px;
+            scrollbar-width: thin;
+        }
+
+        .card-back-word-subhead {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-soft);
+            padding-bottom: 10px;
+        }
+
+        .back-word-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .back-meaning {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .section-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius-md);
+            padding: 13px 15px;
+            font-size: 13px;
+        }
+
+        .section-box.example-box {
+            border-left: 3px solid var(--primary);
+            background: #faf7f2;
+        }
+
+        .example-en {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            line-height: 1.45;
+            margin-bottom: 4px;
+        }
+
+        .example-en .hl {
+            color: var(--primary);
+            font-weight: 700;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .example-zh {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .section-box.feynman-box {
+            border-left: 3px solid var(--sand);
+            background: #fdfbf7;
+        }
+
+        .feynman-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--sand);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .feynman-text {
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .card-back-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-tertiary);
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-soft);
+        }
+
+        /* 翻卡栏控制按纽 (上一个 / 标记掌握 / 下一个) */
+        .card-controls {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr 1fr;
+            gap: 10px;
+        }
+
+        .btn-control {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 11px 16px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-control:hover:not(:disabled) {
+            background: var(--bg-subtle);
+            border-color: var(--border-dark);
+            color: var(--text-primary);
+        }
+
+        .btn-control:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .btn-control.btn-master {
+            border-color: var(--success-border);
+            color: var(--success);
+            background: var(--success-light);
+        }
+
+        .btn-control.btn-master:hover {
+            background: #e3ede5;
+            border-color: var(--success);
+        }
+
+        .btn-control.btn-master.is-mastered {
+            background: var(--success);
+            color: #ffffff;
+            border-color: var(--success);
+            box-shadow: 0 4px 12px rgba(103, 125, 107, 0.28);
+        }
+
+        /* ==========================================================================
+           6. 智能英文造句工坊与模拟 AI 纠错反馈面板
+           ========================================================================== */
+        .maker-column {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .glass-panel {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow-card);
+            padding: 26px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .section-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .prompt-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.55;
+        }
+
+        .target-word-pill {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 700;
+            padding: 2px 9px;
+            border-radius: 6px;
+            border: 1px solid var(--primary-border);
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sentence-textarea {
+            width: 100%;
+            height: 115px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            font-family: var(--font-sans);
+            font-size: 15px;
+            color: var(--text-primary);
+            background: #ffffff;
+            resize: none;
+            outline: none;
+            transition: all 0.2s;
+            line-height: 1.5;
+        }
+
+        .sentence-textarea:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+            background: #ffffff;
+        }
+
+        .sentence-textarea::placeholder {
+            color: var(--text-tertiary);
+            font-size: 14px;
+        }
+
+        .input-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .char-count {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .btn-actions-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-clear {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 7px 13px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-clear:hover {
+            background: var(--bg-subtle);
+            color: var(--text-primary);
+        }
+
+        .btn-submit {
+            background: var(--primary);
+            color: #ffffff;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 8px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            box-shadow: 0 3px 10px rgba(155, 103, 77, 0.25);
+        }
+
+        .btn-submit:hover {
+            background: var(--primary-hover);
+            box-shadow: 0 5px 14px rgba(155, 103, 77, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* AI 反馈呈现卡片 */
+        .feedback-container {
+            border-top: 1px solid var(--border-soft);
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            display: none;
+            animation: fadeIn 0.35s ease-out;
+        }
+
+        .feedback-container.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .verdict-tag {
+            font-size: 13px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: var(--radius-pill);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .verdict-tag.great {
+            background: var(--success-light);
+            color: var(--success);
+            border: 1px solid var(--success-border);
+        }
+
+        .verdict-tag.warn {
+            background: var(--warning-light);
+            color: var(--warning);
+            border: 1px solid var(--sand-border);
+        }
+
+        .verdict-tag.error {
+            background: var(--danger-light);
+            color: var(--danger);
+            border: 1px solid rgba(179, 89, 89, 0.25);
+        }
+
+        .feedback-comment {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* 温和纠错区域 (Gentle Correction) */
+        .correction-block {
+            background: #faf7f2;
+            border: 1px solid var(--sand-border);
+            border-radius: var(--radius-md);
+            padding: 13px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .correction-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--warning);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .correction-diff {
+            font-size: 13px;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .correction-diff .strike {
+            color: var(--danger);
+            text-decoration: line-through;
+            opacity: 0.85;
+        }
+
+        .correction-diff .suggest {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .correction-diff .reason {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        /* 地道表达补充 */
+        .native-block {
+            background: var(--slate-light);
+            border: 1px solid var(--slate-border);
+            border-radius: var(--radius-md);
+            padding: 12px 14px;
+            font-size: 13px;
+            color: var(--slate);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .native-block strong {
+            font-size: 12px;
+            letter-spacing: 0.3px;
+            color: var(--slate);
+        }
+
+        /* 历史造句抽屉 */
+        .history-section {
+            border-top: 1px solid var(--border-soft);
+            padding-top: 14px;
+        }
+
+        .history-toggle-btn {
+            background: transparent;
+            border: none;
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+
+        .history-toggle-btn:hover {
+            color: var(--primary);
+        }
+
+        .history-list {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 160px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        .history-item {
+            font-size: 13px;
+            padding: 8px 12px;
+            background: var(--bg-subtle);
+            border-radius: var(--radius-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-soft);
+        }
+
+        .history-item-sentence {
+            color: var(--text-primary);
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 80%;
+        }
+
+        .history-item-date {
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+
+        /* 快捷键与底部说明 */
+        .footer-tips {
+            margin-top: 36px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .kbd {
+            background: #ffffff;
+            border: 1px solid var(--border-dark);
+            border-bottom: 2px solid var(--border-dark);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-shell">
+        <!-- 1. 顶部 Header -->
+        <header class="app-header">
+            <div class="brand-group">
+                <div class="brand-logo">L</div>
+                <div>
+                    <h1 class="brand-title">
+                        Lumina English
+                        <span class="brand-tag">莫兰迪大地版</span>
+                    </h1>
+                    <p class="brand-subtitle">极简智能英语学习工坊 · 费曼速记 × AI 造句精进</p>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <div class="stats-bar">
+                    <div class="stat-pill" title="已掌握的高阶单词">
+                        <span class="stat-icon">🌿</span>
+                        <span>已掌握 <strong id="statMastered">0</strong>/<span id="statTotal">32</span></span>
+                    </div>
+                    <div class="stat-pill" title="已完成的 AI 造句练习数">
+                        <span class="stat-icon">✍️</span>
+                        <span>造句 <strong id="statSentences">0</strong> 篇</span>
+                    </div>
+                </div>
+                <button class="btn-reset-store" id="btnResetAll" title="清空本地学习进度">重置</button>
+            </div>
+        </header>
+
+        <!-- 2. 分类筛选导航栏 -->
+        <div class="category-nav-bar">
+            <div class="category-tabs" id="categoryTabs">
+                <!-- 动态渲染分类标签 -->
+            </div>
+            <div class="deck-counter-badge">
+                词库索引：<strong id="currentWordPosition">1</strong> / <span id="filteredWordTotal">32</span>
+            </div>
+        </div>
+
+        <!-- 3. 主学习网格 -->
+        <main class="main-grid">
+
+            <!-- 左侧：3D 翻转卡片与翻页控制 -->
+            <section class="card-column">
+                <div class="card-stage">
+                    <div class="card-flipper" id="cardFlipper" tabindex="0" role="button" aria-label="点击翻转单词卡片">
+                        
+                        <!-- 正面：英文单词、音标、词性与常用搭配 -->
+                        <div class="card-face card-front">
+                            <div class="card-header-meta">
+                                <div class="card-tags-row">
+                                    <span class="badge-cefr" id="cardCefr">C1 ADVANCED</span>
+                                    <span class="badge-category" id="cardCategory">🌿 哲思心境</span>
+                                </div>
+                                <span class="badge-pos" id="cardPos">n. 名词</span>
+                            </div>
+
+                            <div class="word-body-center">
+                                <div class="word-title" id="cardWord">Serendipity</div>
+                                <div class="phonetic-wrapper">
+                                    <span id="cardPhonetic">/ˌser.ənˈdɪp.ə.ti/</span>
+                                    <button class="btn-audio" id="btnAudioWord" title="朗读单词发音" aria-label="朗读发音">
+                                        <svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                                    </button>
+                                </div>
+                                <div class="collocations-box" id="cardCollocations">
+                                    <!-- 动态搭配 -->
+                                </div>
+                            </div>
+
+                            <div class="card-front-hint">
+                                <span>👆 点击卡片或按 <span class="kbd">Space</span> 翻转查看释义与费曼记忆</span>
+                            </div>
+                        </div>
+
+                        <!-- 背面：精准中文释义、双语例句与费曼速记法 -->
+                        <div class="card-face card-back">
+                            <div class="card-header-meta">
+                                <span class="badge-cefr" id="cardBackCefr">C1 ADVANCED</span>
+                                <span class="badge-pos" id="cardBackPos">n. 名词</span>
+                            </div>
+
+                            <div class="card-back-content">
+                                <div class="card-back-word-subhead">
+                                    <span class="back-word-title" id="cardBackWord">Serendipity</span>
+                                    <span class="back-meaning" id="cardBackMeaning">意外发现美好事物的运气</span>
+                                </div>
+
+                                <div class="section-box example-box">
+                                    <div class="example-en" id="cardExampleEn">
+                                        Finding this lovely cafe was pure <span class="hl">serendipity</span>.
+                                    </div>
+                                    <div class="example-zh" id="cardExampleZh">
+                                        偶然发现这家可爱的咖啡馆，纯粹是一种机缘巧合。
+                                    </div>
+                                </div>
+
+                                <div class="section-box feynman-box">
+                                    <div class="feynman-title">💡 费曼生活速记</div>
+                                    <div class="feynman-text" id="cardFeynman">
+                                        把生活当成开盲盒，不刻意寻找却意外撞见惊喜的那一瞬间，就是 serendipity。
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-back-hint">
+                                <span>🔄 再次点击卡片翻回正面</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 切换导航与掌握按钮 -->
+                <div class="card-controls">
+                    <button class="btn-control" id="btnPrevWord" title="上一个单词 (←)">
+                        <span>← 上一词</span>
+                    </button>
+                    <button class="btn-control btn-master" id="btnToggleMaster" title="标记已掌握当前词">
+                        <span id="masterStatusText">🌿 标为已掌握</span>
+                    </button>
+                    <button class="btn-control" id="btnNextWord" title="下一个单词 (→)">
+                        <span>下一词 →</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 右侧：造句工坊与模拟 AI 诊断纠错 -->
+            <section class="maker-column">
+                <div class="glass-panel">
+                    <div class="section-header-row">
+                        <h2 class="section-title">
+                            <span>✍️ AI 造句与实战诊断</span>
+                        </h2>
+                        <span class="prompt-desc">
+                            请运用 <span class="target-word-pill" id="targetWordBadge">Serendipity</span> 写一句英文
+                        </span>
+                    </div>
+
+                    <div class="input-group">
+                        <textarea 
+                            class="sentence-textarea" 
+                            id="sentenceInput" 
+                            placeholder="在此输入你构建的英文句子，例如：It was pure serendipity that we met on the train... (支持按 Ctrl + Enter 快捷提交)"
+                            maxlength="300"
+                        ></textarea>
+                        
+                        <div class="input-footer">
+                            <span class="char-count" id="charCount">0/300 字符</span>
+                            <div class="btn-actions-row">
+                                <button class="btn-clear" id="btnClearInput">清空</button>
+                                <button class="btn-submit" id="btnSubmitSentence">
+                                    <span>AI 智能诊断</span>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 模拟 AI 诊断与反馈结果 -->
+                    <div class="feedback-container" id="feedbackContainer">
+                        <div class="feedback-header">
+                            <span class="verdict-tag great" id="feedbackVerdict">🌟 极佳表达</span>
+                            <button class="btn-audio" id="btnAudioUserSentence" title="朗读我的造句" aria-label="朗读造句">
+                                <svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                            </button>
+                        </div>
+                        
+                        <p class="feedback-comment" id="feedbackComment">
+                            句子构建自然得体，精准使用了目标词汇！
+                        </p>
+
+                        <!-- 温和纠错框 (若有瑕疵时显示) -->
+                        <div class="correction-block" id="correctionBlock" style="display: none;">
+                            <div class="correction-title">
+                                <span>💡 【Gentle Correction 温和修正】</span>
+                            </div>
+                            <div class="correction-diff" id="correctionDiff">
+                                <span class="strike">Original sentence</span>
+                                <span class="suggest">Suggested revision</span>
+                                <span class="reason">解析说明</span>
+                            </div>
+                        </div>
+
+                        <!-- 地道表达点拨 -->
+                        <div class="native-block" id="nativeBlock">
+                            <strong>🎯 Native Speaker 点金表达</strong>
+                            <span id="nativeTipText">母语者常用 "It was pure serendipity..." 来描述一切美好的不期而遇。</span>
+                        </div>
+                    </div>
+
+                    <!-- 历史造句记录抽屉 -->
+                    <div class="history-section">
+                        <button class="history-toggle-btn" id="btnToggleHistory">
+                            <span>📜 查看当前词历史造句 (<span id="historyCount">0</span>)</span>
+                        </button>
+                        <div class="history-list" id="historyList" style="display: none;">
+                            <!-- 历史列表项通过 JS 动态注入 -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- 键盘快捷键提示 -->
+        <footer class="footer-tips">
+            <span>翻转卡片: <span class="kbd">Space</span></span>
+            <span>切换单词: <span class="kbd">←</span> <span class="kbd">→</span></span>
+            <span>提交造句: <span class="kbd">Ctrl</span> + <span class="kbd">Enter</span></span>
+            <span>语音朗读: 扬声器图标</span>
+        </footer>
+    </div>
+
+    <!-- ==========================================================================
+         7. 核心业务逻辑与 32+ 莫兰迪高阶词库架构
+         ========================================================================== -->
+    <script>
+        // --- 1. 分类定义 ---
+        const CATEGORIES = [
+            { id: "all", name: "全部词汇", icon: "✨" },
+            { id: "mind", name: "哲思心境", icon: "🌿" },
+            { id: "career", name: "职场远见", icon: "💼" },
+            { id: "aesthetic", name: "艺术感知", icon: "🎨" },
+            { id: "empathy", name: "人性共情", icon: "🤝" },
+            { id: "fluency", name: "高频进阶", icon: "⚡" }
+        ];
+
+        // --- 2. 核心词库数据库 (解耦架构，随时增减不影响业务逻辑) ---
+        const VOCABULARY_DATABASE = [
+            // --- 🌿 哲思心境 ---
+            {
+                id: "w_serendipity",
+                word: "Serendipity",
+                phonetic: "/ˌser.ənˈdɪp.ə.ti/",
+                level: "C1 ADVANCED",
+                pos: "n. 名词",
+                category: "mind",
+                meaning: "意外发现美好事物的运气；机缘巧合",
+                collocations: ["pure serendipity", "by serendipity", "a serendipitous encounter"],
+                exampleEn: "Finding this lovely cafe was pure <span class=\"hl\">serendipity</span>.",
+                exampleZh: "偶然发现这家可爱的咖啡馆，纯粹是一种机缘巧合。",
+                feynman: "把生活当成开盲盒，不刻意寻找却意外撞见惊喜的那一瞬间，就是 serendipity。",
+                nativeTip: "母语者极常用 'It was pure serendipity that...' 来表达毫不做作、天赐一般的幸运缘分。",
+                keywords: ["serendipity", "serendipitous"]
+            },
+            {
+                id: "w_solitude",
+                word: "Solitude",
+                phonetic: "/ˈsɒl.ɪ.tjuːd/",
+                level: "B2 UPPER-INT",
+                pos: "n. 名词",
+                category: "mind",
+                meaning: "独处；清静惬意的独居（带充电治愈意味）",
+                collocations: ["peaceful solitude", "enjoy solitude", "retreat into solitude"],
+                exampleEn: "He enjoys the quiet <span class=\"hl\">solitude</span> of early mornings.",
+                exampleZh: "他十分享受清晨那份宁静惬意、无人打扰的独处时光。",
+                feynman: "Loneliness 是被动孤单寂寞；Solitude 则是主动拉上窗帘给自己精神充电的独处享受。",
+                nativeTip: "语感分界岭：'I am lonely' 表示痛苦孤单，而 'I relish my solitude' 是精神丰盈的自由！",
+                keywords: ["solitude"]
+            },
+            {
+                id: "w_ephemeral",
+                word: "Ephemeral",
+                phonetic: "/ɪˈfem.ər.əl/",
+                level: "C1 ADVANCED",
+                pos: "adj. 形容词",
+                category: "mind",
+                meaning: "短暂的；转瞬即逝的；朝生暮死的",
+                collocations: ["ephemeral beauty", "ephemeral pleasures", "fame is ephemeral"],
+                exampleEn: "Cherry blossoms are famous for their <span class=\"hl\">ephemeral</span> beauty.",
+                exampleZh: "樱花以其转瞬即逝的绚烂美丽而闻名遐迩。",
+                feynman: "就像清晨叶尖上的露珠或刹那烟火，美得动人心魄却只有短短一瞬。",
+                nativeTip: "写文章或演讲想替代枯燥的 'short-lived' 时，用 ephemeral 质感立刻拉满。",
+                keywords: ["ephemeral"]
+            },
+            {
+                id: "w_catharsis",
+                word: "Catharsis",
+                phonetic: "/kəˈθɑː.sɪs/",
+                level: "C2 PROFICIENT",
+                pos: "n. 名词",
+                category: "mind",
+                meaning: "情感宣泄；精神涤荡与解脱",
+                collocations: ["emotional catharsis", "a sense of catharsis", "therapeutic catharsis"],
+                exampleEn: "Writing down her feelings provided a powerful sense of <span class=\"hl\">catharsis</span>.",
+                exampleZh: "把内心感受诉诸笔端，带给她一种极其强烈的精神释放与宣泄感。",
+                feynman: "就像心头压抑了很久的乌云，在痛痛快快下了一场暴雨后彻底放晴的通透感。",
+                nativeTip: "看完催泪电影或听完震撼音乐后的大哭，都可以用 'It was a total catharsis'。",
+                keywords: ["catharsis", "cathartic"]
+            },
+            {
+                id: "w_sonder",
+                word: "Sonder",
+                phonetic: "/ˈsɒn.dər/",
+                level: "C1 ADVANCED",
+                pos: "n. 名词",
+                category: "mind",
+                meaning: "顿悟每个陌路人都在过着与自己同样生动复杂的人生的奇妙意识",
+                collocations: ["moment of sonder", "deep sonder", "struck by sonder"],
+                exampleEn: "Looking at the lit windows in the city, she was filled with <span class=\"hl\">sonder</span>.",
+                exampleZh: "望着城市里万家灯火，她心中涌起一种强烈的顿悟：每个人都在经历深邃繁复的人生。",
+                feynman: "当你坐在公交车上看窗外匆匆行人，突然意识到每个人都是自己宏大电影里的唯一主角。",
+                nativeTip: "这是当代英语文学与社交媒体最爱的高感悟新词，体现极其深刻的情感观察力。",
+                keywords: ["sonder"]
+            },
+            {
+                id: "w_epiphany",
+                word: "Epiphany",
+                phonetic: "/ɪˈpɪf.ən.i/",
+                level: "C1 ADVANCED",
+                pos: "n. 名词",
+                category: "mind",
+                meaning: "顿悟；灵光乍现的深刻领悟",
+                collocations: ["sudden epiphany", "have an epiphany", "moment of epiphany"],
+                exampleEn: "Walking in the woods, he had a sudden <span class=\"hl\">epiphany</span> about his career.",
+                exampleZh: "在林间漫步时，他对自己的职业生涯突然产生了一次醍醐灌顶般的顿悟。",
+                feynman: "思维拼图一直卡在最后一块，突然啪嗒一声完美嵌合、眼前豁然开朗的那个瞬间。",
+                nativeTip: "口语中极常见：'I had an epiphany yesterday' 比单纯的 'I suddenly realized' 更有神圣惊喜感。",
+                keywords: ["epiphany", "epiphanies"]
+            },
+            {
+                id: "w_nostalgia",
+                word: "Nostalgia",
+                phonetic: "/nɒsˈtæl.dʒə/",
+                level: "B2 UPPER-INT",
+                pos: "n. 名词",
+                category: "mind",
+                meaning: "怀旧；对往昔美好时光的温情眷恋",
+                collocations: ["wave of nostalgia", "feel nostalgia", "sweet nostalgia"],
+                exampleEn: "Hearing the old melody brought a gentle wave of <span class=\"hl\">nostalgia</span>.",
+                exampleZh: "听到那首熟悉的旧旋律，心中泛起了一阵温柔的怀旧涟漪。",
+                feynman: "翻看多年前泛黄老照片或闻到童年夏天西瓜味道时，心中那份微甜又微涩的牵绊。",
+                nativeTip: "常用搭配：'a tinge of nostalgia'（一丝淡淡的乡愁怀旧感）。",
+                keywords: ["nostalgia", "nostalgic"]
+            },
+            {
+                id: "w_equanimity",
+                word: "Equanimity",
+                phonetic: "/ˌek.wəˈnɪm.ə.ti/",
+                level: "C2 PROFICIENT",
+                pos: "n. 名词",
+                category: "mind",
+                meaning: "心平气和；处变不惊；泰然自若",
+                collocations: ["face with equanimity", "mental equanimity", "maintain equanimity"],
+                exampleEn: "She accepted both praise and criticism with graceful <span class=\"hl\">equanimity</span>.",
+                exampleZh: "无论面对赞誉还是批评，她都始终保持着优雅从容、泰然自若的心境。",
+                feynman: "外界狂风暴雨惊涛骇浪，内心却像深潭静水一样波澜不惊的沉稳修养。",
+                nativeTip: "高管评价与人生哲理高阶词：'Handling uncertainty with equanimity'（从容应对未知）。",
+                keywords: ["equanimity"]
+            },
+
+            // --- 💼 职场远见 ---
+            {
+                id: "w_resilience",
+                word: "Resilience",
+                phonetic: "/rɪˈzɪl.jəns/",
+                level: "B2 UPPER-INT",
+                pos: "n. 名词",
+                category: "career",
+                meaning: "坚韧；韧性；迅速恢复元气的能力",
+                collocations: ["build resilience", "mental resilience", "remarkable resilience"],
+                exampleEn: "The team demonstrated incredible <span class=\"hl\">resilience</span> during the crisis.",
+                exampleZh: "团队在危机期间展现出了令人惊叹的坚韧与抗挫复原力。",
+                feynman: "就像记忆海绵，不管被外界多大力道压扁，都能立刻柔和而坚定地弹回原状。",
+                nativeTip: "口语中常说 'bounce back with resilience'（带着韧劲迅速重整旗鼓）。",
+                keywords: ["resilience", "resilient"]
+            },
+            {
+                id: "w_catalyst",
+                word: "Catalyst",
+                phonetic: "/ˈkæt.əl.ɪst/",
+                level: "B2 UPPER-INT",
+                pos: "n. 名词",
+                category: "career",
+                meaning: "催化剂；促使重大变革的关键触发力量",
+                collocations: ["act as a catalyst", "catalyst for change", "primary catalyst"],
+                exampleEn: "The new policy served as a <span class=\"hl\">catalyst</span> for industry innovation.",
+                exampleZh: "这项新政策成为了驱动整个行业技术创新的强大催化剂。",
+                feynman: "推倒第一块多米诺骨牌的手指，让原本迟滞的变革连锁爆发。",
+                nativeTip: "职业发展座右铭：'Be the catalyst for positive change'（做促成积极变革的领头人）。",
+                keywords: ["catalyst", "catalysts"]
+            },
+            {
+                id: "w_meticulous",
+                word: "Meticulous",
+                phonetic: "/məˈtɪk.jə.ləs/",
+                level: "C1 ADVANCED",
+                pos: "adj. 形容词",
+                category: "career",
+                meaning: "一丝不苟的；极其严谨细致的",
+                collocations: ["meticulous attention", "meticulous planning", "meticulous work"],
+                exampleEn: "He conducted <span class=\"hl\">meticulous</span> research before publishing the paper.",
+                exampleZh: "他在发表论文前进行了极其严谨细致、一丝不苟的考证与钻研。",
+                feynman: "拿着放大镜和细镊子雕刻微雕艺术品的状态，连一粒微尘都不会放过。",
+                nativeTip: "外企面试或评价加分词：'He has a meticulous eye for detail' 远比单纯的 'careful' 高级。",
+                keywords: ["meticulous", "meticulously"]
+            },
+            {
+                id: "w_pragmatic",
+                word: "Pragmatic",
+                phonetic: "/præɡˈmæt.ɪk/",
+                level: "C1 ADVANCED",
+                pos: "adj. 形容词",
+                category: "career",
+                meaning: "务实的；讲究实效的；重实用的",
+                collocations: ["pragmatic approach", "pragmatic solution", "pragmatic mindset"],
+                exampleEn: "We need a <span class=\"hl\">pragmatic</span> approach to solve this dilemma.",
+                exampleZh: "我们需要采取一种求真务实、行之有效的方法来化解这个两难困境。",
+                feynman: "与其争论桥该漆成什么颜色，不如先动手铺一块能走人的结实木板。",
+                nativeTip: "商业会议核心词汇：'Let's take a pragmatic look at the numbers'（让我们务实地审视数据）。",
+                keywords: ["pragmatic", "pragmatism"]
+            },
+            {
+                id: "w_leverage",
+                word: "Leverage",
+                phonetic: "/ˈliː.vər.ɪdʒ/",
+                level: "B2 UPPER-INT",
+                pos: "v. 动词 / n. 名词",
+                category: "career",
+                meaning: "撬动；充分利用关键资源以获得最大效益",
+                collocations: ["leverage strengths", "leverage technology", "strategic leverage"],
+                exampleEn: "Startups can <span class=\"hl\">leverage</span> modern AI tools to accelerate growth.",
+                exampleZh: "初创企业可以充分借助撬动现代 AI 工具来加速自身成长。",
+                feynman: "阿基米德的杠杆支点：用最小的力气，巧妙撬起原本搬不动的巨大石头。",
+                nativeTip: "比单纯用 'use' 或 'utilize' 更加强调'四两拨千斤'的战略放大效应。",
+                keywords: ["leverage", "leveraged"]
+            },
+            {
+                id: "w_paradigm",
+                word: "Paradigm",
+                phonetic: "/ˈpær.ə.daɪm/",
+                level: "C1 ADVANCED",
+                pos: "n. 名词",
+                category: "career",
+                meaning: "范式；思维模型与认知体系",
+                collocations: ["paradigm shift", "new paradigm", "existing paradigm"],
+                exampleEn: "Generative AI has brought a fundamental <span class=\"hl\">paradigm</span> shift to design.",
+                exampleZh: "生成式 AI 为现代设计行业带来了根本性的范式革新与思维转换。",
+                feynman: "不仅是换一把工具，而是直接换掉了我们观察世界的整副眼镜底色。",
+                nativeTip: "'paradigm shift'（范式转变）是科技界、学术界与商业演讲的标志性高频词。",
+                keywords: ["paradigm"]
+            },
+            {
+                id: "w_synergy",
+                word: "Synergy",
+                phonetic: "/ˈsɪn.ə.dʒi/",
+                level: "B2 UPPER-INT",
+                pos: "n. 名词",
+                category: "career",
+                meaning: "协同效应；1+1>2 的联合增效作用",
+                collocations: ["create synergy", "team synergy", "synergistic effect"],
+                exampleEn: "The merger created powerful <span class=\"hl\">synergy</span> between the two companies.",
+                exampleZh: "两家企业的强强联合，释放出了巨大的协同倍增效应。",
+                feynman: "两个音符单独响只是声音，组合成和弦却激荡出一整首动人的交响乐。",
+                nativeTip: "汇报跨部门合作成果必用词：'The synergy between our teams drove the success'。",
+                keywords: ["synergy", "synergistic"]
+            },
+            {
+                id: "w_visionary",
+                word: "Visionary",
+                phonetic: "/ˈvɪʒ.ən.ər.i/",
+                level: "C1 ADVANCED",
+                pos: "adj. 有远见的 / n. 远见者",
+                category: "career",
+                meaning: "具有远见卓识的；立足未来的领袖人物",
+                collocations: ["visionary leader", "visionary idea", "visionary thinking"],
+                exampleEn: "She is a <span class=\"hl\">visionary</span> entrepreneur who shapes the future.",
+                exampleZh: "她是一位具有远见卓识的创业者，始终走在时代前沿定义未来。",
+                feynman: "当大家还在看脚下三米的路，他已经站在山巅描摹十年后地平线的轮廓。",
+                nativeTip: "用来赞誉杰出创始人或前瞻性策划案的最佳高级词汇。",
+                keywords: ["visionary"]
+            },
+
+            // --- 🎨 艺术感知 ---
+            {
+                id: "w_petrichor",
+                word: "Petrichor",
+                phonetic: "/ˈpet.rɪ.kɔːr/",
+                level: "C2 PROFICIENT",
+                pos: "n. 名词",
+                category: "aesthetic",
+                meaning: "久旱逢雨后泥土散发出的清新芳香",
+                collocations: ["scent of petrichor", "fresh petrichor", "rich petrichor"],
+                exampleEn: "She loved walking outside to breathe in the fresh <span class=\"hl\">petrichor</span>.",
+                exampleZh: "她喜欢漫步户外，大口呼吸初雨后那股清新扑鼻的泥土芬芳。",
+                feynman: "希腊语 petra(岩石) + ichor(神之灵液)，夏日初雨击打干涸大地时的嗅觉浪漫通感。",
+                nativeTip: "英语中最具诗意和画面感的词汇之一，母语文学爱好者非常痴迷的特定感官词汇。",
+                keywords: ["petrichor"]
+            },
+            {
+                id: "w_eloquent",
+                word: "Eloquent",
+                phonetic: "/ˈel.ə.kwənt/",
+                level: "C1 ADVANCED",
+                pos: "adj. 形容词",
+                category: "aesthetic",
+                meaning: "雄辩的；表达生动感人的；口才极佳的",
+                collocations: ["an eloquent speech", "eloquent speaker", "eloquently spoken"],
+                exampleEn: "Her <span class=\"hl\">eloquent</span> speech moved everyone in the audience.",
+                exampleZh: "她那充满感染力的动人演讲令全场观众无不为之动容。",
+                feynman: "e-(向外) + loqu-(言语)，语言如清泉般自然倾泻、直抵人心的优雅表达力量。",
+                nativeTip: "除了形容人的谈吐，还可以形容眼神：'an eloquent glance'（胜过千言万语的一瞥）。",
+                keywords: ["eloquent", "eloquence", "eloquently"]
+            },
+            {
+                id: "w_mellifluous",
+                word: "Mellifluous",
+                phonetic: "/melˈɪf.lu.əs/",
+                level: "C2 PROFICIENT",
+                pos: "adj. 形容词",
+                category: "aesthetic",
+                meaning: "声音甜美如蜜的；悦耳圆润动听的",
+                collocations: ["mellifluous voice", "mellifluous tones", "mellifluous sound"],
+                exampleEn: "The radio host had a smooth, <span class=\"hl\">mellifluous</span> voice.",
+                exampleZh: "那位电台播音员拥有一副温润圆滑、甜美悦耳的绝妙嗓音。",
+                feynman: "melli-(蜂蜜) + flu-(流淌)，听在耳朵里就像温热顺滑的蜜糖缓缓流过。",
+                nativeTip: "形容大提琴、夜莺叫声或电台主播嗓音的高级赞赏用词。",
+                keywords: ["mellifluous"]
+            },
+            {
+                id: "w_halcyon",
+                word: "Halcyon",
+                phonetic: "/ˈhæl.si.ən/",
+                level: "C2 PROFICIENT",
+                pos: "adj. 形容词",
+                category: "aesthetic",
+                meaning: "岁月静好的；和平宁谧的；黄金时代的",
+                collocations: ["halcyon days", "halcyon era", "halcyon memories"],
+                exampleEn: "They recalled the <span class=\"hl\">halcyon</span> days of their youth.",
+                exampleZh: "他们温情回忆起那段无忧无虑、平静美好的青春黄金岁月。",
+                feynman: "源自翠鸟平息海浪的希腊传说，代表没有暴风骤雨、只有风和日丽的温润时光。",
+                nativeTip: "文学经典固定短语：'the halcyon days of...'（……的美好全盛期）。",
+                keywords: ["halcyon"]
+            },
+            {
+                id: "w_ethereal",
+                word: "Ethereal",
+                phonetic: "/iˈθɪə.ri.əl/",
+                level: "C2 PROFICIENT",
+                pos: "adj. 形容词",
+                category: "aesthetic",
+                meaning: "超凡脱俗的；飘渺空灵的；非尘世的",
+                collocations: ["ethereal beauty", "ethereal light", "ethereal melody"],
+                exampleEn: "The morning mist gave the lake an <span class=\"hl\">ethereal</span> glow.",
+                exampleZh: "晨雾为平静的湖面笼上了一层飘渺空灵、若隐若现的仙境光辉。",
+                feynman: "就像莫兰迪画作里的低饱和色泽，不浓烈不刺眼，带着不食人间烟火的恬淡与朦胧。",
+                nativeTip: "形容森林薄雾、极光或纯净空灵的音乐时极佳。",
+                keywords: ["ethereal"]
+            },
+            {
+                id: "w_resonant",
+                word: "Resonant",
+                phonetic: "/ˈrez.ən.ənt/",
+                level: "C1 ADVANCED",
+                pos: "adj. 形容词",
+                category: "aesthetic",
+                meaning: "引起强烈共鸣的；回响深远的；洪亮的",
+                collocations: ["resonant voice", "resonant theme", "deeply resonant"],
+                exampleEn: "His story was deeply <span class=\"hl\">resonant</span> with my own life experiences.",
+                exampleZh: "他的故事与我自己的人生轨迹产生了极其深刻、绵延持久的共鸣。",
+                feynman: "两个同样频率的音叉，轻轻敲响一个，另一个也会在静默中自然震颤发声。",
+                nativeTip: "评价一部文学电影作品：'It has a resonant emotional core'（具有直击人心的共鸣内核）。",
+                keywords: ["resonant", "resonance"]
+            },
+
+            // --- 🤝 人性共情 ---
+            {
+                id: "w_empathy",
+                word: "Empathy",
+                phonetic: "/ˈem.pə.θi/",
+                level: "B1 INTERMEDIATE",
+                pos: "n. 名词",
+                category: "empathy",
+                meaning: "同理心；设身处地的共情能力",
+                collocations: ["show empathy", "deep empathy", "empathy for others"],
+                exampleEn: "Great leaders always listen with genuine <span class=\"hl\">empathy</span>.",
+                exampleZh: "卓越的领导者总是带着真挚由衷的同理心去倾听他人。",
+                feynman: "Sympathy 是站在岸上看人落水觉得可怜；Empathy 是直接跳进水里感同身受他的冰冷与呼吸。",
+                nativeTip: "口语常用金句：'Put yourself in someone else's shoes' 就是 Empathy 的最佳写照。",
+                keywords: ["empathy", "empathetic"]
+            },
+            {
+                id: "w_compassion",
+                word: "Compassion",
+                phonetic: "/kəmˈpæʃ.ən/",
+                level: "B2 UPPER-INT",
+                pos: "n. 名词",
+                category: "empathy",
+                meaning: "慈悲；深切关怀；怜悯同情并付诸行动",
+                collocations: ["feel compassion", "show compassion", "act of compassion"],
+                exampleEn: "She treated the wounded birds with tenderness and <span class=\"hl\">compassion</span>.",
+                exampleZh: "她带着深切的温柔与慈爱细心照料那些受伤的鸟儿。",
+                feynman: "不仅心里感到难过，更是忍不住伸出温暖双手去包扎和托举的那份善意。",
+                nativeTip: "日常常说：'Have compassion for yourself'（接纳不完美的自己，对自己温柔一点）。",
+                keywords: ["compassion", "compassionate"]
+            },
+            {
+                id: "w_altruism",
+                word: "Altruism",
+                phonetic: "/ˈæl.tru.ɪ.zəm/",
+                level: "C1 ADVANCED",
+                pos: "n. 名词",
+                category: "empathy",
+                meaning: "利他主义；无私为他人的高尚品德",
+                collocations: ["pure altruism", "act of altruism", "motivated by altruism"],
+                exampleEn: "Volunteering was a selfless act of <span class=\"hl\">altruism</span>.",
+                exampleZh: "参与这项志愿援助行动，是一种纯粹无私、温暖人心的利他之举。",
+                feynman: "黑夜里为你素不相识的同行者悄悄点亮一盏灯，自己却从不索取任何回报。",
+                nativeTip: "探讨社会学、心理学与人性道德时的高频典雅词汇。",
+                keywords: ["altruism", "altruistic"]
+            },
+            {
+                id: "w_vulnerability",
+                word: "Vulnerability",
+                phonetic: "/ˌvʌl.nər.əˈbɪl.ə.ti/",
+                level: "B2 UPPER-INT",
+                pos: "n. 名词",
+                category: "empathy",
+                meaning: "脆弱性；敢于展现真实自我的勇气",
+                collocations: ["embrace vulnerability", "show vulnerability", "emotional vulnerability"],
+                exampleEn: "Showing <span class=\"hl\">vulnerability</span> is not weakness; it is the ultimate form of courage.",
+                exampleZh: "敢于展露脆弱并非软弱，而是内心强大与极致勇气的真切体现。",
+                feynman: "卸掉沉重的钢铁铠甲，露出柔软温热的胸膛，真正敞开心扉与人相连。",
+                nativeTip: "TED 演讲顶流核心概念，布琳·布朗名作核心：'Vulnerability is the birthplace of connection'。",
+                keywords: ["vulnerability", "vulnerable"]
+            },
+
+            // --- ⚡ 高频进阶 ---
+            {
+                id: "w_lucid",
+                word: "Lucid",
+                phonetic: "/ˈluː.sɪd/",
+                level: "B2 UPPER-INT",
+                pos: "adj. 形容词",
+                category: "fluency",
+                meaning: "清晰易懂的；头脑清醒透彻的",
+                collocations: ["lucid explanation", "lucid dream", "a lucid moment"],
+                exampleEn: "She gave a <span class=\"hl\">lucid</span> explanation of the complex system.",
+                exampleZh: "她对这个错综复杂的系统做出了极其清晰透彻、通俗易懂的拆解。",
+                feynman: "词根 luc-(光芒)，就像用一束纯净聚光灯把原本混沌的事物照得纤毫毕现。",
+                nativeTip: "夸奖同事汇报特别明了时，说 'That was such a lucid summary!' 显得非常有修养。",
+                keywords: ["lucid", "lucidly"]
+            },
+            {
+                id: "w_ubiquitous",
+                word: "Ubiquitous",
+                phonetic: "/juːˈbɪk.wɪ.təs/",
+                level: "C1 ADVANCED",
+                pos: "adj. 形容词",
+                category: "fluency",
+                meaning: "无处不在的；十分普遍普遍存在的",
+                collocations: ["ubiquitous presence", "become ubiquitous", "ubiquitous computing"],
+                exampleEn: "Smartphones have become truly <span class=\"hl\">ubiquitous</span> in modern society.",
+                exampleZh: "智能手机在当今现代社会中已经真正变得无处不在、随处可见。",
+                feynman: "就像阳光和空气，只要你一转头，任何角落都必然有它的身影。",
+                nativeTip: "雅思与学术写作中代替过度泛滥的 'everywhere' 和 'common' 的王牌高级词。",
+                keywords: ["ubiquitous"]
+            },
+            {
+                id: "w_nuance",
+                word: "Nuance",
+                phonetic: "/ˈnjuː.ɑːns/",
+                level: "C1 ADVANCED",
+                pos: "n. 名词",
+                category: "fluency",
+                meaning: "细微差别；微妙之意；深层意味",
+                collocations: ["subtle nuance", "cultural nuances", "grasp the nuance"],
+                exampleEn: "A good translator captures every subtle <span class=\"hl\">nuance</span> of the original text.",
+                exampleZh: "一位优秀的翻译家总能精准捕捉原文中每一个微妙纤细的言外之意与韵味。",
+                feynman: "黑与白之间那几百种微妙深浅的莫兰迪灰色阶，差之毫厘却韵味万千。",
+                nativeTip: "外企探讨产品方案时常说：'There is a lot of nuance here'（这其中包含很多深层考量）。",
+                keywords: ["nuance", "nuanced", "nuances"]
+            },
+            {
+                id: "w_imperative",
+                word: "Imperative",
+                phonetic: "/ɪmˈper.ə.tɪv/",
+                level: "B2 UPPER-INT",
+                pos: "adj. 极其迫切关键的 / n. 当务之急",
+                category: "fluency",
+                meaning: "至关重要的；势在必行的；当务之急",
+                collocations: ["it is imperative that", "strategic imperative", "moral imperative"],
+                exampleEn: "It is <span class=\"hl\">imperative</span> to take immediate action against climate change.",
+                exampleZh: "对气候变化立即采取果断行动，是当务之急、刻不容缓的重任。",
+                feynman: "大坝裂了一条缝，必须立刻修好，否则耽搁一秒都会引发生死存亡危机。",
+                nativeTip: "高端商务与政经句式：'It is imperative that we do...' 气场远超 'We must'。",
+                keywords: ["imperative"]
+            },
+            {
+                id: "w_mitigate",
+                word: "Mitigate",
+                phonetic: "/ˈmɪt.ɪ.ɡeɪt/",
+                level: "C1 ADVANCED",
+                pos: "v. 动词",
+                category: "fluency",
+                meaning: "减轻；缓和；缓解潜在风险与不良影响",
+                collocations: ["mitigate risks", "mitigate impact", "measures to mitigate"],
+                exampleEn: "The company implemented new measures to <span class=\"hl\">mitigate</span> financial risks.",
+                exampleZh: "公司推行了一系列稳健举措，以最大限度缓解潜在的财务风险。",
+                feynman: "在暴风雨来临前，给小树苗套上柔和防风支架，将风暴伤害降到最低。",
+                nativeTip: "职场风险管理金牌高频词：'mitigate risks'（规避/减轻风险）。",
+                keywords: ["mitigate", "mitigation"]
+            },
+            {
+                id: "w_feasible",
+                word: "Feasible",
+                phonetic: "/ˈfiː.zə.bəl/",
+                level: "B2 UPPER-INT",
+                pos: "adj. 形容词",
+                category: "fluency",
+                meaning: "切实可行的；行得通的；能落地的",
+                collocations: ["feasible solution", "technically feasible", "economically feasible"],
+                exampleEn: "The proposal sounds appealing, but is it financially <span class=\"hl\">feasible</span>?",
+                exampleZh: "这项提议听起来很有吸引力，但在财务成本上究竟是否切实可行呢？",
+                feynman: "不是画在纸上的空中楼阁，而是带齐图纸与砖瓦，明天就能挽起袖子搭起来的房子。",
+                nativeTip: "商业可行性论证核心词汇：'feasibility study'（可行性调研报告）。",
+                keywords: ["feasible", "feasibility"]
+            }
+        ];
+
+        // --- 3. 本地存储管理模型 (LocalStorage) ---
+        const STORAGE_KEY = "LUMINA_ENGLISH_MORANDI_V2";
+
+        class LearningStorage {
+            constructor() {
+                this.state = this.load();
+            }
+
+            getDefaultState() {
+                return {
+                    currentIndex: 0,
+                    activeCategory: "all",
+                    masteredWordIds: [],
+                    sentencesHistory: {}, // { [wordId]: [ { text, time, status } ] }
+                    lastActiveDate: new Date().toISOString().split("T")[0]
+                };
+            }
+
+            load() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    if (raw) {
+                        return { ...this.getDefaultState(), ...JSON.parse(raw) };
+                    }
+                } catch (e) {
+                    console.warn("读取本地缓存异常，初始化默认数据", e);
+                }
+                return this.getDefaultState();
+            }
+
+            save() {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
+                } catch (e) {
+                    console.error("保存本地缓存异常", e);
+                }
+            }
+
+            isMastered(wordId) {
+                return this.state.masteredWordIds.includes(wordId);
+            }
+
+            toggleMaster(wordId) {
+                const idx = this.state.masteredWordIds.indexOf(wordId);
+                if (idx > -1) {
+                    this.state.masteredWordIds.splice(idx, 1);
+                } else {
+                    this.state.masteredWordIds.push(wordId);
+                }
+                this.save();
+                return this.isMastered(wordId);
+            }
+
+            addSentence(wordId, text, status) {
+                if (!this.state.sentencesHistory[wordId]) {
+                    this.state.sentencesHistory[wordId] = [];
+                }
+                this.state.sentencesHistory[wordId].unshift({
+                    text: text.trim(),
+                    time: new Date().toLocaleString(),
+                    status: status
+                });
+                this.save();
+            }
+
+            getSentences(wordId) {
+                return this.state.sentencesHistory[wordId] || [];
+            }
+
+            getTotalSentencesCount() {
+                return Object.values(this.state.sentencesHistory).reduce((sum, list) => sum + list.length, 0);
+            }
+
+            reset() {
+                this.state = this.getDefaultState();
+                this.save();
+            }
+        }
+
+        const store = new LearningStorage();
+
+        // --- 4. 运行时应用状态模型 ---
+        let currentFilteredList = [...VOCABULARY_DATABASE];
+        let currentWordIndex = 0; // 在 filteredList 中的索引
+        let activeCategoryId = store.state.activeCategory || "all";
+        let isFlipped = false;
+        let lastTestedSentence = "";
+
+        // --- 5. DOM 元素缓存 ---
+        const UI = {
+            // 顶部统计
+            statMastered: document.getElementById("statMastered"),
+            statTotal: document.getElementById("statTotal"),
+            statSentences: document.getElementById("statSentences"),
+            btnResetAll: document.getElementById("btnResetAll"),
+            categoryTabs: document.getElementById("categoryTabs"),
+            currentWordPosition: document.getElementById("currentWordPosition"),
+            filteredWordTotal: document.getElementById("filteredWordTotal"),
+
+            // 单词卡片
+            flipper: document.getElementById("cardFlipper"),
+            cardCefr: document.getElementById("cardCefr"),
+            cardCategory: document.getElementById("cardCategory"),
+            cardPos: document.getElementById("cardPos"),
+            cardWord: document.getElementById("cardWord"),
+            cardPhonetic: document.getElementById("cardPhonetic"),
+            cardCollocations: document.getElementById("cardCollocations"),
+            btnAudioWord: document.getElementById("btnAudioWord"),
+
+            // 卡片背面
+            cardBackCefr: document.getElementById("cardBackCefr"),
+            cardBackPos: document.getElementById("cardBackPos"),
+            cardBackWord: document.getElementById("cardBackWord"),
+            cardBackMeaning: document.getElementById("cardBackMeaning"),
+            cardExampleEn: document.getElementById("cardExampleEn"),
+            cardExampleZh: document.getElementById("cardExampleZh"),
+            cardFeynman: document.getElementById("cardFeynman"),
+
+            // 导航控制器
+            btnPrevWord: document.getElementById("btnPrevWord"),
+            btnNextWord: document.getElementById("btnNextWord"),
+            btnToggleMaster: document.getElementById("btnToggleMaster"),
+            masterStatusText: document.getElementById("masterStatusText"),
+
+            // 造句输入与 AI 反馈
+            targetWordBadge: document.getElementById("targetWordBadge"),
+            sentenceInput: document.getElementById("sentenceInput"),
+            charCount: document.getElementById("charCount"),
+            btnClearInput: document.getElementById("btnClearInput"),
+            btnSubmitSentence: document.getElementById("btnSubmitSentence"),
+            
+            // 反馈容器
+            feedbackContainer: document.getElementById("feedbackContainer"),
+            feedbackVerdict: document.getElementById("feedbackVerdict"),
+            feedbackComment: document.getElementById("feedbackComment"),
+            btnAudioUserSentence: document.getElementById("btnAudioUserSentence"),
+            correctionBlock: document.getElementById("correctionBlock"),
+            correctionDiff: document.getElementById("correctionDiff"),
+            nativeBlock: document.getElementById("nativeBlock"),
+            nativeTipText: document.getElementById("nativeTipText"),
+
+            // 历史
+            btnToggleHistory: document.getElementById("btnToggleHistory"),
+            historyCount: document.getElementById("historyCount"),
+            historyList: document.getElementById("historyList")
+        };
+
+        // --- 6. 语音朗读引擎 (Web Speech API) ---
+        function speak(text, rate = 0.92, pitch = 1.0) {
+            if (!("speechSynthesis" in window)) {
+                alert("抱歉，您的浏览器当前未开放语音合成接口。");
+                return;
+            }
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = "en-US";
+            utterance.rate = rate;
+            utterance.pitch = pitch;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // --- 7. 过滤词汇与状态同步 ---
+        function applyCategoryFilter(catId) {
+            activeCategoryId = catId;
+            store.state.activeCategory = catId;
+            store.save();
+
+            if (catId === "all") {
+                currentFilteredList = [...VOCABULARY_DATABASE];
+            } else {
+                currentFilteredList = VOCABULARY_DATABASE.filter(item => item.category === catId);
+            }
+
+            // 安全重设索引
+            currentWordIndex = 0;
+            isFlipped = false;
+            UI.flipper.classList.remove("is-flipped");
+            
+            renderCategoryTabs();
+            render();
+        }
+
+        function renderCategoryTabs() {
+            UI.categoryTabs.innerHTML = CATEGORIES.map(cat => {
+                const count = cat.id === "all" 
+                    ? VOCABULARY_DATABASE.length 
+                    : VOCABULARY_DATABASE.filter(w => w.category === cat.id).length;
+                const isActive = cat.id === activeCategoryId;
+                return `
+                    <button class="category-tab ${isActive ? "active" : ""}" data-id="${cat.id}">
+                        <span>${cat.icon} ${cat.name}</span>
+                        <span class="tab-badge">${count}</span>
+                    </button>
+                `;
+            }).join("");
+
+            // 绑定点击
+            UI.categoryTabs.querySelectorAll(".category-tab").forEach(tab => {
+                tab.addEventListener("click", () => {
+                    const catId = tab.dataset.id;
+                    applyCategoryFilter(catId);
+                });
+            });
+        }
+
+        // --- 8. 核心渲染函数 ---
+        function render() {
+            if (currentFilteredList.length === 0) return;
+            const item = currentFilteredList[currentWordIndex];
+            const isMastered = store.isMastered(item.id);
+
+            // 1. 顶部数据
+            UI.statMastered.textContent = store.state.masteredWordIds.length;
+            UI.statTotal.textContent = VOCABULARY_DATABASE.length;
+            UI.statSentences.textContent = store.getTotalSentencesCount();
+            UI.currentWordPosition.textContent = currentWordIndex + 1;
+            UI.filteredWordTotal.textContent = currentFilteredList.length;
+
+            // 2. 卡片正面
+            UI.cardWord.textContent = item.word;
+            UI.cardPhonetic.textContent = item.phonetic;
+            UI.cardCefr.textContent = item.level;
+            UI.cardPos.textContent = item.pos;
+
+            const categoryObj = CATEGORIES.find(c => c.id === item.category);
+            UI.cardCategory.textContent = categoryObj ? `${categoryObj.icon} ${categoryObj.name}` : "";
+
+            UI.cardCollocations.innerHTML = item.collocations.map(c => `
+                <span class="collocation-chip">${c}</span>
+            `).join("");
+
+            // 3. 卡片背面
+            UI.cardBackWord.textContent = item.word;
+            UI.cardBackCefr.textContent = item.level;
+            UI.cardBackPos.textContent = item.pos;
+            UI.cardBackMeaning.textContent = item.meaning;
+            UI.cardExampleEn.innerHTML = item.exampleEn;
+            UI.cardExampleZh.textContent = item.exampleZh;
+            UI.cardFeynman.textContent = item.feynman;
+
+            // 4. 掌握按钮与翻页状态
+            UI.btnPrevWord.disabled = currentWordIndex <= 0;
+            UI.btnNextWord.disabled = currentWordIndex >= currentFilteredList.length - 1;
+
+            if (isMastered) {
+                UI.btnToggleMaster.classList.add("is-mastered");
+                UI.masterStatusText.textContent = "✓ 已温习掌握";
+            } else {
+                UI.btnToggleMaster.classList.remove("is-mastered");
+                UI.masterStatusText.textContent = "🌿 标为已掌握";
+            }
+
+            // 5. 造句区
+            UI.targetWordBadge.textContent = item.word;
+            UI.nativeTipText.textContent = item.nativeTip;
+
+            // 6. 重置反馈面板
+            UI.feedbackContainer.classList.remove("active");
+            renderHistoryList();
+        }
+
+        // --- 9. 卡片翻转交互 ---
+        function toggleFlip() {
+            isFlipped = !isFlipped;
+            UI.flipper.classList.toggle("is-flipped", isFlipped);
+        }
+
+        function switchWord(newIndex) {
+            if (newIndex < 0 || newIndex >= currentFilteredList.length) return;
+            currentWordIndex = newIndex;
+            isFlipped = false;
+            UI.flipper.classList.remove("is-flipped");
+            render();
+        }
+
+        // --- 10. 规则驱动的智能 AI 语法纠错与语感评估引擎 ---
+        function analyzeSentenceWithAI(userSentence, targetItem) {
+            const cleanText = userSentence.trim();
+            const lowerText = cleanText.toLowerCase();
+
+            // 1. 词汇嵌入性检查
+            const matchesWord = targetItem.keywords.some(k => {
+                const regex = new RegExp(`\\b${k.toLowerCase()}\\b`, "i");
+                return regex.test(cleanText);
+            });
+
+            if (!matchesWord) {
+                return {
+                    status: "warn",
+                    verdictText: "⚠️ 建议融入目标词",
+                    comment: `造句意境不错，但似乎尚未包含本次学习的目标词【${targetItem.word}】。请尝试将它巧妙融入你的句子中，以巩固语感记忆！`,
+                    correction: {
+                        show: false
+                    }
+                };
+            }
+
+            // 2. 标点与大小写规范检查
+            const startsCapital = /^[A-Z"']/.test(cleanText);
+            const endsPunctuation = /[.!?]"?$/.test(cleanText);
+
+            if (!startsCapital || !endsPunctuation) {
+                let suggested = cleanText;
+                if (!startsCapital) {
+                    suggested = suggested.charAt(0).toUpperCase() + suggested.slice(1);
+                }
+                if (!endsPunctuation) {
+                    suggested = suggested + ".";
+                }
+                return {
+                    status: "warn",
+                    verdictText: "💡 书写规范温和提示",
+                    comment: `句子立意非常精准！只需注意英语书写的标点规范：句首首字母建议大写，句末别忘了添加句号哦。`,
+                    correction: {
+                        show: true,
+                        original: cleanText,
+                        suggested: suggested,
+                        reason: "英文书写规范：标准句首大写，句末保留完整标点终止符。"
+                    }
+                };
+            }
+
+            // 3. 极短句子扩充建议 (深度语境不足)
+            const wordsCount = cleanText.split(/\s+/).length;
+            if (wordsCount < 5) {
+                return {
+                    status: "warn",
+                    verdictText: "🌱 鼓励丰富上下文",
+                    comment: `词汇使用准确！不过当前句子偏短（仅 ${wordsCount} 个词），建议试着添加时间、地点、因果或情绪转折，让表达更饱满立体！`,
+                    correction: {
+                        show: true,
+                        original: cleanText,
+                        suggested: `${cleanText.replace(/[.!?]$/, "")}, which left a deep impression on everyone.`,
+                        reason: "增加非限制性定语从句，赋予句子更饱满的故事张力与学术质感。"
+                    }
+                };
+            }
+
+            // 4. 常见搭配与介词瑕疵检测
+            if (targetItem.word === "Serendipity" && lowerText.includes("by a serendipity")) {
+                return {
+                    status: "warn",
+                    verdictText: "💡 冠词地道点拨",
+                    comment: `Serendipity 作为抽象名词通常不可数，在表达'偶然地'时母语者更习惯用 'by serendipity' 或 'pure serendipity'。`,
+                    correction: {
+                        show: true,
+                        original: cleanText,
+                        suggested: cleanText.replace(/by a serendipity/gi, "by pure serendipity"),
+                        reason: "抽象概念通常不加不定冠词 a，使用 pure serendipity 语感更为纯正。"
+                    }
+                };
+            }
+
+            if (targetItem.word === "Resilience" && lowerText.includes("make resilience")) {
+                return {
+                    status: "warn",
+                    verdictText: "💡 动宾搭配点拨",
+                    comment: `表达'培养坚韧品质'时，英语母语者更常搭配动词 'build'、'develop' 或 'foster'，而非直译的 'make'。`,
+                    correction: {
+                        show: true,
+                        original: cleanText,
+                        suggested: cleanText.replace(/make resilience/gi, "build resilience"),
+                        reason: "动词搭配习惯：build / develop resilience。"
+                    }
+                };
+            }
+
+            if (targetItem.word === "Empathy" && lowerText.includes("have empathy on")) {
+                return {
+                    status: "warn",
+                    verdictText: "💡 介词习惯点拨",
+                    comment: `表达对某人的同理心共情时，习惯搭配介词 'for' 或 'towards'，而非 'on'。`,
+                    correction: {
+                        show: true,
+                        original: cleanText,
+                        suggested: cleanText.replace(/have empathy on/gi, "have empathy for"),
+                        reason: "固定介词习惯：empathy for / towards others。"
+                    }
+                };
+            }
+
+            // 5. 完美达标通过
+            return {
+                status: "great",
+                verdictText: "🌟 极佳表达 · Native Level",
+                comment: `太棒了！你完美地将【${targetItem.word}】自然地融入到了情境表达中，句意流畅饱满，语感非常优秀！`,
+                correction: {
+                    show: false
+                }
+            };
+        }
+
+        // --- 11. 渲染造句历史 ---
+        function renderHistoryList() {
+            const currentItem = currentFilteredList[currentWordIndex];
+            if (!currentItem) return;
+            const list = store.getSentences(currentItem.id);
+            UI.historyCount.textContent = list.length;
+
+            if (list.length === 0) {
+                UI.historyList.innerHTML = `<div style="font-size:12px;color:var(--text-tertiary);text-align:center;padding:8px;">暂无该词造句记录，快来写下你的第一句吧！</div>`;
+                return;
+            }
+
+            UI.historyList.innerHTML = list.map(item => `
+                <div class="history-item">
+                    <span class="history-item-sentence" title="${item.text}">“${item.text}”</span>
+                    <span class="history-item-date">${item.time.split(" ")[0]}</span>
+                </div>
+            `).join("");
+        }
+
+        // --- 12. 交互绑定与事件监听 ---
+        UI.flipper.addEventListener("click", (e) => {
+            if (e.target.closest(".btn-audio")) return;
+            toggleFlip();
+        });
+
+        // 发音朗读
+        UI.btnAudioWord.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const item = currentFilteredList[currentWordIndex];
+            speak(item.word);
+        });
+
+        UI.btnAudioUserSentence.addEventListener("click", () => {
+            if (lastTestedSentence) {
+                speak(lastTestedSentence, 0.9);
+            }
+        });
+
+        // 上一个 / 下一个
+        UI.btnPrevWord.addEventListener("click", () => switchWord(currentWordIndex - 1));
+        UI.btnNextWord.addEventListener("click", () => switchWord(currentWordIndex + 1));
+
+        // 标记掌握
+        UI.btnToggleMaster.addEventListener("click", () => {
+            const item = currentFilteredList[currentWordIndex];
+            store.toggleMaster(item.id);
+            render();
+        });
+
+        // 字符统计
+        UI.sentenceInput.addEventListener("input", () => {
+            const len = UI.sentenceInput.value.length;
+            UI.charCount.textContent = `${len}/300 字符`;
+        });
+
+        // 清空
+        UI.btnClearInput.addEventListener("click", () => {
+            UI.sentenceInput.value = "";
+            UI.charCount.textContent = "0/300 字符";
+            UI.sentenceInput.focus();
+        });
+
+        // 提交诊断
+        function submitSentenceDiagnosis() {
+            const text = UI.sentenceInput.value.trim();
+            if (!text) {
+                alert("请输入一句包含当前单词的英文句子再进行 AI 诊断哦！");
+                UI.sentenceInput.focus();
+                return;
+            }
+
+            const currentItem = currentFilteredList[currentWordIndex];
+            lastTestedSentence = text;
+
+            // 智能分析
+            const result = analyzeSentenceWithAI(text, currentItem);
+
+            UI.feedbackVerdict.className = `verdict-tag ${result.status}`;
+            UI.feedbackVerdict.textContent = result.verdictText;
+            UI.feedbackComment.textContent = result.comment;
+
+            if (result.correction && result.correction.show) {
+                UI.correctionBlock.style.display = "flex";
+                UI.correctionDiff.innerHTML = `
+                    <div><span class="strike">${result.correction.original}</span> ➔ <span class="suggest">${result.correction.suggested}</span></div>
+                    <span class="reason">解析：${result.correction.reason}</span>
+                `;
+            } else {
+                UI.correctionBlock.style.display = "none";
+            }
+
+            UI.feedbackContainer.classList.add("active");
+
+            // 保存到 LocalStorage
+            store.addSentence(currentItem.id, text, result.status);
+
+            renderHistoryList();
+            UI.statSentences.textContent = store.getTotalSentencesCount();
+        }
+
+        UI.btnSubmitSentence.addEventListener("click", submitSentenceDiagnosis);
+
+        // 查看历史抽屉
+        UI.btnToggleHistory.addEventListener("click", () => {
+            const isVisible = UI.historyList.style.display === "block";
+            UI.historyList.style.display = isVisible ? "none" : "block";
+            UI.btnToggleHistory.querySelector("span").textContent = isVisible 
+                ? `📜 查看当前词历史造句 (${store.getSentences(currentFilteredList[currentWordIndex].id).length})`
+                : `▲ 收起历史造句`;
+        });
+
+        // 重置
+        UI.btnResetAll.addEventListener("click", () => {
+            if (confirm("确定要清空本地所有学习进度、已掌握单词和造句记录吗？")) {
+                store.reset();
+                applyCategoryFilter("all");
+            }
+        });
+
+        // 全局键盘快捷键
+        window.addEventListener("keydown", (e) => {
+            if (document.activeElement === UI.sentenceInput) {
+                if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+                    e.preventDefault();
+                    submitSentenceDiagnosis();
+                }
+                return;
+            }
+
+            if (e.code === "Space") {
+                e.preventDefault();
+                toggleFlip();
+            } else if (e.code === "ArrowLeft") {
+                e.preventDefault();
+                if (currentWordIndex > 0) switchWord(currentWordIndex - 1);
+            } else if (e.code === "ArrowRight") {
+                e.preventDefault();
+                if (currentWordIndex < currentFilteredList.length - 1) switchWord(currentWordIndex + 1);
+            }
+        });
+
+        // --- 13. 首次启动初始化 ---
+        renderCategoryTabs();
+        render();
+    </script>
+</body>
+</html>

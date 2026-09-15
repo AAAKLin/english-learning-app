@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>English World — 一场用英语完成的旅行</title>
+    <style>
+        :root {
+            --bg-deep: #0a0a14;
+            --bg-panel: #12121f;
+            --bg-card: #1a1a2e;
+            --bg-input: #1e1e38;
+            --text-primary: #e8e8f0;
+            --text-secondary: #a0a0c0;
+            --text-muted: #6a6a8a;
+            --accent: #f0c040;
+            --accent-glow: rgba(240, 192, 64, 0.35);
+            --green: #4caf50;
+            --green-glow: rgba(76, 175, 80, 0.3);
+            --red: #e05a5a;
+            --red-glow: rgba(224, 90, 90, 0.3);
+            --blue: #4a8ecf;
+            --blue-glow: rgba(74, 142, 207, 0.3);
+            --npc-bubble: #1e2a3a;
+            --player-bubble: #1a3a2a;
+            --pixel-border: 2px solid #3a3a5a;
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --btn-height: 56px;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        html, body {
+            height: 100%;
+            width: 100%;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            overflow: hidden;
+            touch-action: manipulation;
+            -webkit-font-smoothing: antialiased;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        #app {
+            height: 100%;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            background: var(--bg-deep);
+            display: flex;
+            flex-direction: column;
+        }
+        .screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 16px;
+            padding-bottom: calc(16px + var(--safe-bottom));
+            -webkit-overflow-scrolling: touch;
+            animation: fadeIn 0.25s ease-out;
+        }
+        .screen.no-scroll {
+            overflow: hidden;
+            justify-content: center;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        @keyframes blink {
+            0%, 100% { border-color: var(--accent); }
+            50% { border-color: transparent; }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-4px); }
+            40% { transform: translateX(4px); }
+            60% { transform: translateX(-2px); }
+            80% { transform: translateX(2px); }
+        }
+        @keyframes flyIn {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .pixel-title {
+            font-family: 'Courier New', monospace;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0 rgba(240, 192, 64, 0.4), 4px 4px 0 rgba(0, 0, 0, 0.4);
+            color: var(--accent);
+            line-height: 1.2;
+        }
+        .pixel-subtitle {
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            min-height: var(--btn-height);
+            padding: 12px 20px;
+            border: 2px solid #4a4a6a;
+            border-radius: var(--radius-md);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            letter-spacing: 0.5px;
+            position: relative;
+            -webkit-touch-callout: none;
+        }
+        .btn:active { transform: scale(0.97); filter: brightness(1.3); }
+        .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #1a1a2e;
+            font-weight: 700;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+        .btn-primary:active { box-shadow: 0 2px 10px var(--accent-glow); }
+        .btn-secondary {
+            background: var(--bg-card);
+            border-color: #5a5a8a;
+            color: var(--text-primary);
+        }
+        .btn-ghost {
+            background: transparent;
+            border-color: transparent;
+            color: var(--text-secondary);
+            min-height: 44px;
+        }
+        .btn-small {
+            min-height: 40px;
+            padding: 8px 14px;
+            font-size: 0.9rem;
+            border-radius: var(--radius-sm);
+        }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+        .voice-btn {
+            min-height: 72px;
+            border-radius: var(--radius-lg);
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-width: 3px;
+            transition: all 0.15s ease;
+            background: var(--green);
+            border-color: var(--green);
+            color: #fff;
+            box-shadow: 0 6px 30px var(--green-glow);
+            cursor: pointer;
+        }
+        .voice-btn.recording {
+            background: var(--red);
+            border-color: var(--red);
+            box-shadow: 0 6px 30px var(--red-glow);
+            animation: shake 0.3s ease;
+        }
+        .voice-btn.transcribing {
+            background: var(--blue);
+            border-color: var(--blue);
+            box-shadow: 0 6px 30px var(--blue-glow);
+        }
+        .voice-btn.processing {
+            background: var(--text-muted);
+            border-color: var(--text-muted);
+            animation: pulse 1s infinite;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: var(--pixel-border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .card-accent {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(240, 192, 64, 0.15);
+        }
+        .npc-bubble {
+            background: var(--npc-bubble);
+            border: 1px solid #3a4a6a;
+            border-radius: var(--radius-md);
+            padding: 12px 14px;
+            margin-bottom: 8px;
+            max-width: 85%;
+            align-self: flex-start;
+            animation: flyIn 0.3s ease-out;
+        }
+        .player-bubble {
+            background: var(--player-bubble);
+            border: 1px solid #2a5a3a;
+            border-radius: var(--radius-md);
+            padding: 12px 14px;
+            margin-bottom: 8px;
+            max-width: 85%;
+            align-self: flex-end;
+            margin-left: auto;
+            animation: flyIn 0.3s ease-out;
+        }
+        .bubble-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+        .npc-bubble .bubble-label { color: #7a9acf; }
+        .player-bubble .bubble-label { color: #6abf8a; }
+        .bubble-text {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            color: var(--text-primary);
+            word-break: break-word;
+        }
+        .conversation-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow-y: auto;
+            padding: 8px 0;
+            min-height: 0;
+            -webkit-overflow-scrolling: touch;
+        }
+        .input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-top: 12px;
+            border-top: 1px solid #2a2a4a;
+            flex-shrink: 0;
+        }
+        .text-input-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .text-input {
+            flex: 1;
+            min-height: 48px;
+            padding: 10px 14px;
+            background: var(--bg-input);
+            border: 2px solid #3a3a5a;
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+            user-select: text;
+            -webkit-user-select: text;
+        }
+        .text-input:focus { border-color: var(--accent); }
+        .text-input::placeholder { color: var(--text-muted); font-size: 0.9rem; }
+        .hint-btn {
+            min-height: 40px;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            background: transparent;
+            border: 1px dashed #5a5a8a;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+        .hint-btn:active { background: rgba(240, 192, 64, 0.1); }
+
+        .mission-header {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 12px 14px;
+            background: rgba(240, 192, 64, 0.08);
+            border: 1px solid rgba(240, 192, 64, 0.3);
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+        }
+        .mission-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0.5px;
+        }
+        .mission-situation {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .checklist-dots {
+            display: flex;
+            gap: 6px;
+            margin-top: 4px;
+        }
+        .checklist-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #3a3a5a;
+            border: 1px solid #5a5a8a;
+            transition: all 0.3s;
+        }
+        .checklist-dot.done {
+            background: var(--green);
+            border-color: var(--green);
+            box-shadow: 0 0 8px var(--green-glow);
+        }
+        .progress-text {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .scene-feedback {
+            text-align: center;
+            padding: 20px;
+            animation: flyIn 0.4s ease-out;
+        }
+        .scene-feedback .icon { font-size: 2.5rem; margin-bottom: 12px; }
+        .scene-feedback .title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--green);
+            margin-bottom: 8px;
+        }
+
+        .chapter-complete-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px 10px;
+            gap: 16px;
+        }
+        .chapter-complete-screen .trophy {
+            font-size: 4rem;
+            animation: pulse 2s infinite;
+        }
+        .chapter-complete-screen .title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--accent);
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+        .chapter-summary-list {
+            text-align: left;
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .chapter-summary-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+        .chapter-summary-item .check { color: var(--green); font-weight: 700; }
+        .divider { border-top: 1px solid #2a2a4a; margin: 12px 0; }
+
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            justify-content: center;
+            flex: 1;
+            padding: 20px 0;
+        }
+        .logo-area { text-align: center; margin-bottom: 20px; }
+        .logo-area .main-logo {
+            font-size: 2.2rem;
+            font-weight: 900;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 3px;
+            color: var(--accent);
+            text-shadow: 0 0 30px var(--accent-glow), 2px 2px 0 #000;
+            line-height: 1.1;
+        }
+        .logo-area .tagline {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            letter-spacing: 1px;
+        }
+        .dest-card {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 18px;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .dest-card:active { transform: scale(0.97); }
+        .dest-card.vietnam {
+            background: linear-gradient(135deg, #1a1a3a, #2a1a2a);
+            border: 2px solid #4a4a7a;
+        }
+        .dest-card.thailand {
+            background: linear-gradient(135deg, #1a1a2a, #1a2a2a);
+            border: 2px solid #3a4a4a;
+            opacity: 0.7;
+        }
+        .dest-card .flag { font-size: 2.5rem; }
+        .dest-card .name { font-size: 1.3rem; font-weight: 700; letter-spacing: 1px; }
+        .dest-card .status { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        .budget-options {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .budget-option {
+            padding: 8px 16px;
+            border: 2px solid #3a3a5a;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            background: transparent;
+        }
+        .budget-option.selected {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(240, 192, 64, 0.15);
+            font-weight: 700;
+        }
+        .budget-option:active { transform: scale(0.95); }
+
+        .error-banner {
+            background: rgba(224, 90, 90, 0.15);
+            border: 1px solid var(--red);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            color: var(--red);
+            font-size: 0.85rem;
+            animation: shake 0.3s ease;
+        }
+        .hint-panel {
+            background: rgba(240, 192, 64, 0.08);
+            border: 1px solid rgba(240, 192, 64, 0.4);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            margin-bottom: 10px;
+            animation: flyIn 0.25s ease-out;
+        }
+        .hint-panel .hint-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        .hint-panel .hint-text {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+        .modal-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            animation: fadeIn 0.15s ease-out;
+            padding: 20px;
+        }
+        .modal-content {
+            background: var(--bg-panel);
+            border: 2px solid #4a4a6a;
+            border-radius: var(--radius-lg);
+            padding: 24px 20px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+            animation: flyIn 0.3s ease-out;
+        }
+        .modal-content .modal-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+        .modal-content .modal-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+        .transition-plane {
+            font-size: 4rem;
+            text-align: center;
+            animation: pulse 1s infinite;
+            margin-bottom: 20px;
+        }
+        .transition-text {
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @media (min-width: 768px) {
+            #app {
+                border-left: 2px solid #2a2a4a;
+                border-right: 2px solid #2a2a4a;
+                box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+            }
+            .screen { padding: 24px; }
+        }
+        @media (max-width: 360px) {
+            .logo-area .main-logo { font-size: 1.7rem; letter-spacing: 2px; }
+            .voice-btn { min-height: 64px; font-size: 1rem; }
+            .btn { min-height: 50px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+    (function() {
+        'use strict';
+
+        // ============================================================
+        // 常量
+        // ============================================================
+        var StateEnum = {
+            BOOT: 'BOOT',
+            MAIN_MENU: 'MAIN_MENU',
+            DESTINATION_SELECT: 'DESTINATION_SELECT',
+            DEPARTURE_SETUP: 'DEPARTURE_SETUP',
+            VOICE_PERMISSION_PREFLIGHT: 'VOICE_PERMISSION_PREFLIGHT',
+            TRANSITION: 'TRANSITION',
+            HOSTEL: 'HOSTEL',
+            HOSTEL_FEEDBACK: 'HOSTEL_FEEDBACK',
+            RESTAURANT: 'RESTAURANT',
+            RESTAURANT_FEEDBACK: 'RESTAURANT_FEEDBACK',
+            CHAPTER_COMPLETE: 'CHAPTER_COMPLETE',
+            SUPPORT: 'SUPPORT'
+        };
+
+        var VoiceStateEnum = {
+            IDLE: 'IDLE',
+            RECORDING: 'RECORDING',
+            TRANSCRIBING: 'TRANSCRIBING',
+            PROCESSING: 'PROCESSING',
+            ERROR: 'ERROR'
+        };
+
+        var OutcomeEnum = {
+            SUCCESS: 'SUCCESS',
+            SUCCESS_WITH_HINT: 'SUCCESS_WITH_HINT',
+            ASSISTED: 'ASSISTED'
+        };
+
+        var SCENE_SEQUENCE = ['hostel', 'restaurant'];
+        var STORAGE_KEY = 'english-world-game-state-v1';
+        var TEXT_NUDGE_KEY = 'english-world-text-nudge-shown';
+        var ANALYTICS_KEY = 'english-world-analytics';
+
+        // ============================================================
+        // 配置
+        // ============================================================
+        var CHECKLIST_CONFIG = {
+            hostel: {
+                missionName: '解决住宿预订问题',
+                situation: '前台找不到你的预订',
+                npcInitial: "I'm sorry, I can't find your reservation.",
+                referenceExpression: "I have a reservation under Zhang for today. Could you check again?",
+                checklist: [
+                    { id: 'introduce_name', label: '介绍名字', keywords: ['zhang', 'name', 'my name', 'under'] },
+                    { id: 'provide_date', label: '提供日期', keywords: ['today', 'date', 'night', 'tonight', 'check-in'] },
+                    { id: 'explain_reservation', label: '说明预订', keywords: ['reservation', 'booking', 'booked', 'room', 'have'] },
+                    { id: 'ask_receptionist_to_check', label: '请前台再查', keywords: ['check', 'look', 'again', 'search', 'find'] }
+                ],
+                hints: [
+                    '你需要先告诉前台你的名字和预订日期。',
+                    '可以先说："I have a reservation..."',
+                    null
+                ]
+            },
+            restaurant: {
+                missionName: '在餐厅解决点餐问题',
+                situation: '餐厅没有你点的菜',
+                npcInitial: "I'm sorry, we're out of that.",
+                referenceExpression: "Oh, that's too bad. What would you recommend instead? I'll take that, thank you.",
+                checklist: [
+                    { id: 'acknowledge_unavailable', label: '理解菜卖完了', keywords: ['ok', 'okay', 'sorry to hear', "that's", 'bad', 'unfortunate', 'understand', 'alright'] },
+                    { id: 'ask_for_alternative', label: '询问替代品', keywords: ['what else', 'instead', 'alternative', 'recommend', 'suggest', 'other', 'substitute', 'replace'] },
+                    { id: 'respond_to_recommendation', label: '回应推荐', keywords: ['yes', 'no', 'ok', 'okay', 'great', 'sounds good', "i'll", 'i will', 'take', 'have', 'want', 'like'] },
+                    { id: 'make_final_choice', label: '做出选择', keywords: ["i'll have", 'i will have', 'take', "i'll take", 'i want', 'order', 'the', 'that', 'this'] }
+                ],
+                hints: [
+                    '先对菜品卖完表示理解，然后问问有什么可以替代的。',
+                    '可以说："What do you recommend instead?"',
+                    null
+                ]
+            }
+        };
+
+        // ============================================================
+        // 工具函数
+        // ============================================================
+        function escapeHtml(str) {
+            if (!str) return '';
+            var div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function trackEvent(eventName, data) {
+            if (data === void 0) data = {};
+            var entry = { event: eventName, timestamp: new Date().toISOString(), data: data };
+            try {
+                console.log('[Analytics]', entry);
+                var existing = [];
+                try {
+                    var raw = localStorage.getItem(ANALYTICS_KEY);
+                    if (raw) existing = JSON.parse(raw);
+                } catch (e) {}
+                existing.push(entry);
+                if (existing.length > 200) existing = existing.slice(-200);
+                localStorage.setItem(ANALYTICS_KEY, JSON.stringify(existing));
+            } catch (e) {}
+        }
+
+        // ============================================================
+        // Mock Conversation Provider
+        // ============================================================
+        function createMockConversationProvider() {
+            function analyzeHostelInput(input) {
+                var text = (input || '').toLowerCase();
+                var signals = [];
+                CHECKLIST_CONFIG.hostel.checklist.forEach(function(item) {
+                    var found = item.keywords.some(function(kw) { return text.indexOf(kw.toLowerCase()) !== -1; });
+                    if (found) signals.push(item.id);
+                });
+                if (text.indexOf('book') !== -1 || text.indexOf('reservation') !== -1 || text.indexOf('room') !== -1) {
+                    if (signals.indexOf('explain_reservation') === -1) signals.push('explain_reservation');
+                }
+                if (text.indexOf('zhang') !== -1 || text.indexOf('my name') !== -1 || text.indexOf('i am') !== -1 || text.indexOf("i'm") !== -1) {
+                    if (signals.indexOf('introduce_name') === -1) signals.push('introduce_name');
+                }
+                if (text.indexOf('today') !== -1 || text.indexOf('tonight') !== -1 || text.indexOf('check in') !== -1 || text.indexOf('check-in') !== -1) {
+                    if (signals.indexOf('provide_date') === -1) signals.push('provide_date');
+                }
+                if (text.indexOf('check') !== -1 || text.indexOf('look') !== -1 || text.indexOf('again') !== -1 || text.indexOf('search') !== -1) {
+                    if (signals.indexOf('ask_receptionist_to_check') === -1) signals.push('ask_receptionist_to_check');
+                }
+                return signals;
+            }
+
+            function analyzeRestaurantInput(input) {
+                var text = (input || '').toLowerCase();
+                var signals = [];
+                CHECKLIST_CONFIG.restaurant.checklist.forEach(function(item) {
+                    var found = item.keywords.some(function(kw) { return text.indexOf(kw.toLowerCase()) !== -1; });
+                    if (found) signals.push(item.id);
+                });
+                if (text.indexOf('ok') !== -1 || text.indexOf('okay') !== -1 || text.indexOf('alright') !== -1 || text.indexOf('sorry') !== -1) {
+                    if (signals.indexOf('acknowledge_unavailable') === -1) signals.push('acknowledge_unavailable');
+                }
+                if (text.indexOf('recommend') !== -1 || text.indexOf('suggest') !== -1 || text.indexOf('instead') !== -1) {
+                    if (signals.indexOf('ask_for_alternative') === -1) signals.push('ask_for_alternative');
+                }
+                if (text.indexOf("i'll have") !== -1 || text.indexOf('i will have') !== -1 || text.indexOf('i want') !== -1 || text.indexOf('i take') !== -1 || text.indexOf("i'll take") !== -1) {
+                    if (signals.indexOf('respond_to_recommendation') === -1) signals.push('respond_to_recommendation');
+                    if (signals.indexOf('make_final_choice') === -1) signals.push('make_final_choice');
+                }
+                return signals;
+            }
+
+            function generateHostelReply(completedSignals) {
+                var hasName = completedSignals.indexOf('introduce_name') !== -1;
+                var hasDate = completedSignals.indexOf('provide_date') !== -1;
+                var hasReservation = completedSignals.indexOf('explain_reservation') !== -1;
+                if (hasName && hasDate && hasReservation) return "Oh! Found it. Yes, Mr. Zhang, your room is ready. Sorry for the wait.";
+                if (hasReservation && hasName && !hasDate) return "I see a reservation for Zhang. What date is it for?";
+                if (hasReservation && !hasName) return "I need your name to check the reservation. Who is it under?";
+                if (!hasReservation && !hasName) return "I'm sorry, but I need some information. Do you have a reservation?";
+                if (hasReservation && hasDate && !hasName) return "Can you tell me your name so I can look it up?";
+                return "Let me check that. Can you tell me more about your booking?";
+            }
+
+            function generateRestaurantReply(completedSignals) {
+                var hasAck = completedSignals.indexOf('acknowledge_unavailable') !== -1;
+                var hasAskAlt = completedSignals.indexOf('ask_for_alternative') !== -1;
+                var hasRespond = completedSignals.indexOf('respond_to_recommendation') !== -1;
+                var hasChoice = completedSignals.indexOf('make_final_choice') !== -1;
+                if (hasChoice && hasRespond) return "Excellent choice! Your food will be ready shortly. Enjoy your meal!";
+                if (hasAskAlt && hasRespond) return "Great! The chef will prepare it right away. Anything else?";
+                if (hasAck && hasAskAlt && !hasRespond) return "I'd recommend the grilled fish. It's very fresh and popular. Would you like to try that?";
+                if (hasAck && !hasAskAlt) return "Would you like me to recommend something else?";
+                if (hasAskAlt && !hasAck) return "The grilled fish is a great choice. Can I get that for you?";
+                return "I'm sorry about that. Is there anything else you'd like to try?";
+            }
+
+            return {
+                sendTurn: function(input, gameState) {
+                    return new Promise(function(resolve) {
+                        setTimeout(function() {
+                            var scene = gameState.currentScene;
+                            var signals = scene === 'hostel' ? analyzeHostelInput(input) : analyzeRestaurantInput(input);
+                            var reply = scene === 'hostel' ? generateHostelReply(signals) : generateRestaurantReply(signals);
+                            resolve({
+                                semanticSignals: signals,
+                                npcReply: reply,
+                                internalNote: 'signals: ' + signals.join(',')
+                            });
+                        }, 250 + Math.random() * 300);
+                    });
+                }
+            };
+        }
+
+        // ============================================================
+        // Mock STT Provider
+        // ============================================================
+        function createMockSpeechToTextProvider() {
+            var phrases = {
+                hostel: [
+                    "I have a reservation under Zhang for today.",
+                    "My name is Zhang, I have a booking for today.",
+                    "I have a reservation for tonight, under Zhang.",
+                    "Could you check again? I have a reservation under Zhang."
+                ],
+                restaurant: [
+                    "That's too bad. What do you recommend instead?",
+                    "Okay, what else do you have?",
+                    "What would you recommend instead?",
+                    "I'll take the grilled fish then."
+                ]
+            };
+            return {
+                transcribe: function(audioBlob, sceneId) {
+                    return new Promise(function(resolve) {
+                        setTimeout(function() {
+                            var list = phrases[sceneId] || phrases.hostel;
+                            resolve(list[Math.floor(Math.random() * list.length)]);
+                        }, 400 + Math.random() * 500);
+                    });
+                }
+            };
+        }
+
+        // ============================================================
+        // 游戏状态
+        // ============================================================
+        function createInitialGameState() {
+            return {
+                destination: 'vietnam',
+                budget: 'standard',
+                currentState: StateEnum.BOOT,
+                currentScene: null,
+                sceneIndex: -1,
+                checklistProgress: {},
+                attemptCount: 0,
+                hintLevel: 0,
+                hintUsed: false,
+                referenceExpression: null,
+                assistedTriggered: false,
+                assistedUsed: false,
+                assistedAttempts: 0,
+                outcome: null,
+                chapterProgress: { hostelCompleted: false, restaurantCompleted: false },
+                textNudgeShown: false,
+                conversationHistory: [],
+                voicePermissionGranted: false,
+                voicePermissionAsked: false,
+                lastError: null
+            };
+        }
+
+        function saveGameState(gs) {
+            try {
+                var serializable = {
+                    destination: gs.destination,
+                    budget: gs.budget,
+                    currentState: gs.currentState,
+                    currentScene: gs.currentScene,
+                    sceneIndex: gs.sceneIndex,
+                    checklistProgress: gs.checklistProgress,
+                    attemptCount: gs.attemptCount,
+                    hintLevel: gs.hintLevel,
+                    hintUsed: gs.hintUsed,
+                    referenceExpression: gs.referenceExpression,
+                    assistedTriggered: gs.assistedTriggered,
+                    assistedUsed: gs.assistedUsed,
+                    assistedAttempts: gs.assistedAttempts,
+                    outcome: gs.outcome,
+                    chapterProgress: gs.chapterProgress,
+                    textNudgeShown: gs.textNudgeShown,
+                    conversationHistory: gs.conversationHistory.slice(-6),
+                    voicePermissionGranted: gs.voicePermissionGranted,
+                    voicePermissionAsked: gs.voicePermissionAsked
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(serializable));
+            } catch (e) {}
+        }
+
+        function loadGameState() {
+            try {
+                var raw = localStorage.getItem(STORAGE_KEY);
+                return raw ? JSON.parse(raw) : null;
+            } catch (e) { return null; }
+        }
+
+        function clearGameState() {
+            try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+        }
+
+        function loadTextNudgeShown() {
+            try { return !!JSON.parse(localStorage.getItem(TEXT_NUDGE_KEY)); } catch (e) { return false; }
+        }
+
+        function setTextNudgeShown() {
+            try { localStorage.setItem(TEXT_NUDGE_KEY, 'true'); } catch (e) {}
+        }
+
+        // ============================================================
+        // Checklist 验证
+        // ============================================================
+        function validateChecklist(signals, sceneId, existingProgress) {
+            var config = CHECKLIST_CONFIG[sceneId];
+            if (!config) return { progress: existingProgress || {}, newSignals: [] };
+            var progress = {};
+            Object.keys(existingProgress || {}).forEach(function(k) { progress[k] = existingProgress[k]; });
+            var newSignals = [];
+            config.checklist.forEach(function(item) {
+                if (signals.indexOf(item.id) !== -1 && !progress[item.id]) {
+                    progress[item.id] = true;
+                    newSignals.push(item.id);
+                }
+            });
+            return { progress: progress, newSignals: newSignals };
+        }
+
+        function getCompletedCount(progress, sceneId) {
+            var config = CHECKLIST_CONFIG[sceneId];
+            if (!config) return 0;
+            return config.checklist.filter(function(item) { return !!progress[item.id]; }).length;
+        }
+
+        function getTotalChecklist(sceneId) {
+            var config = CHECKLIST_CONFIG[sceneId];
+            return config ? config.checklist.length : 0;
+        }
+
+        function isChecklistComplete(progress, sceneId, isAssisted) {
+            var config = CHECKLIST_CONFIG[sceneId];
+            if (!config) return false;
+            // 辅助模式下，完成 2 项即视为通过
+            if (isAssisted) {
+                return getCompletedCount(progress, sceneId) >= 2;
+            }
+            return config.checklist.every(function(item) { return !!progress[item.id]; });
+        }
+
+        function getSceneIdByIndex(index) {
+            return SCENE_SEQUENCE[index] || null;
+        }
+
+        // ============================================================
+        // 应用状态
+        // ============================================================
+        var appEl = document.getElementById('app');
+        var appState = {
+            gameState: createInitialGameState(),
+            uiState: {
+                booted: false,
+                voiceState: VoiceStateEnum.IDLE,
+                inputValue: '',
+                showHint: false,
+                error: null,
+                modal: null
+            },
+            conversationProvider: createMockConversationProvider(),
+            speechToTextProvider: createMockSpeechToTextProvider()
+        };
+        var voiceTimer = null;
+
+        function setGameState(gs) {
+            appState.gameState = gs;
+            saveGameState(gs);
+            render();
+        }
+
+        function setUIState(partial) {
+            Object.keys(partial).forEach(function(k) { appState.uiState[k] = partial[k]; });
+            render();
+        }
+
+        // ============================================================
+        // 游戏流程控制
+        // ============================================================
+        function startNewGame() {
+            var gs = createInitialGameState();
+            gs.currentState = StateEnum.DESTINATION_SELECT;
+            gs.textNudgeShown = loadTextNudgeShown();
+            setGameState(gs);
+            trackEvent('new_game_started');
+        }
+
+        function continueJourney() {
+            var saved = loadGameState();
+            if (saved && saved.currentState && saved.currentState !== StateEnum.BOOT) {
+                var gs = createInitialGameState();
+                Object.keys(saved).forEach(function(k) { gs[k] = saved[k]; });
+                gs.textNudgeShown = loadTextNudgeShown();
+                if (!gs.conversationHistory) gs.conversationHistory = [];
+                if (!gs.checklistProgress) gs.checklistProgress = {};
+                gs.assistedAttempts = gs.assistedAttempts || 0;
+                setGameState(gs);
+                trackEvent('continue_journey');
+            } else {
+                startNewGame();
+            }
+        }
+
+        function startScene(sceneIndex) {
+            var gs = appState.gameState;
+            var sceneId = getSceneIdByIndex(sceneIndex);
+            if (!sceneId) return;
+            gs.currentScene = sceneId;
+            gs.sceneIndex = sceneIndex;
+            gs.checklistProgress = {};
+            gs.attemptCount = 0;
+            gs.hintLevel = 0;
+            gs.hintUsed = false;
+            gs.assistedTriggered = false;
+            gs.assistedUsed = false;
+            gs.assistedAttempts = 0;
+            gs.outcome = null;
+            gs.referenceExpression = CHECKLIST_CONFIG[sceneId].referenceExpression;
+            gs.conversationHistory = [{
+                role: 'npc',
+                text: CHECKLIST_CONFIG[sceneId].npcInitial,
+                label: sceneId === 'hostel' ? '前台' : '服务员'
+            }];
+            gs.currentState = sceneId === 'hostel' ? StateEnum.HOSTEL : StateEnum.RESTAURANT;
+            setGameState(gs);
+            setUIState({ showHint: false, inputValue: '', voiceState: VoiceStateEnum.IDLE, error: null });
+            trackEvent('scene_started', { scene: sceneId });
+        }
+
+        function completeScene(outcome) {
+            var gs = appState.gameState;
+            gs.outcome = outcome;
+            var sceneId = gs.currentScene;
+            if (sceneId === 'hostel') {
+                gs.chapterProgress.hostelCompleted = true;
+                gs.currentState = StateEnum.HOSTEL_FEEDBACK;
+            } else if (sceneId === 'restaurant') {
+                gs.chapterProgress.restaurantCompleted = true;
+                gs.currentState = StateEnum.RESTAURANT_FEEDBACK;
+            }
+            setGameState(gs);
+            trackEvent('scene_completed', { scene: sceneId, outcome: outcome });
+        }
+
+        function advanceFromFeedback() {
+            var gs = appState.gameState;
+            if (gs.currentState === StateEnum.HOSTEL_FEEDBACK) {
+                startScene(1);
+            } else if (gs.currentState === StateEnum.RESTAURANT_FEEDBACK) {
+                gs.currentState = StateEnum.CHAPTER_COMPLETE;
+                setGameState(gs);
+                trackEvent('chapter_completed');
+            }
+        }
+
+        function triggerHint() {
+            var gs = appState.gameState;
+            if (gs.hintLevel < 3) {
+                gs.hintLevel += 1;
+                gs.hintUsed = true;
+                if (gs.hintLevel === 3) {
+                    gs.assistedTriggered = true;
+                    gs.assistedUsed = true;
+                }
+                setGameState(gs);
+                setUIState({ showHint: true });
+                trackEvent('hint_used', { level: gs.hintLevel, scene: gs.currentScene });
+            }
+        }
+
+        function getCurrentHint(sceneId, hintLevel) {
+            var config = CHECKLIST_CONFIG[sceneId];
+            if (!config) return '';
+            if (hintLevel === 3) return '参考表达：' + config.referenceExpression;
+            if (hintLevel === 2) return config.hints[1] || config.hints[0];
+            return config.hints[0] || '';
+        }
+
+        function checkAssistedShouldTrigger() {
+            var gs = appState.gameState;
+            if (gs.assistedTriggered) return false;
+            var threshold = gs.currentScene === 'hostel' ? 3 : 4;
+            return gs.attemptCount >= threshold;
+        }
+
+        function handlePlayerSubmission(text, fromVoice) {
+            if (!text || !text.trim()) return;
+            var gs = appState.gameState;
+            var sceneId = gs.currentScene;
+            if (!sceneId) return;
+            var trimmedText = text.trim();
+            gs.attemptCount += 1;
+            gs.conversationHistory.push({ role: 'player', text: trimmedText, label: '你' });
+            setGameState(gs);
+            setUIState({ inputValue: '', showHint: false, error: null, voiceState: VoiceStateEnum.PROCESSING });
+
+            appState.conversationProvider.sendTurn(trimmedText, gs).then(function(result) {
+                var gs2 = appState.gameState;
+                var signals = result.semanticSignals || [];
+                var npcReply = result.npcReply || "I'm not sure what you mean. Could you say that again?";
+                var isAssisted = gs2.assistedTriggered;
+                var validation = validateChecklist(signals, sceneId, gs2.checklistProgress);
+                gs2.checklistProgress = validation.progress;
+                gs2.conversationHistory.push({ role: 'npc', text: npcReply, label: sceneId === 'hostel' ? '前台' : '服务员' });
+                if (gs2.conversationHistory.length > 6) {
+                    gs2.conversationHistory = gs2.conversationHistory.slice(-6);
+                }
+
+                var complete = isChecklistComplete(gs2.checklistProgress, sceneId, isAssisted);
+
+                // 辅助模式上限：辅助触发后仍失败 2 次，强制完成
+                if (!complete && gs2.assistedTriggered) {
+                    gs2.assistedAttempts += 1;
+                    if (gs2.assistedAttempts >= 2) {
+                        complete = true;
+                    }
+                }
+
+                if (complete) {
+                    var outcome = gs2.assistedUsed ? OutcomeEnum.ASSISTED :
+                        (gs2.hintUsed ? OutcomeEnum.SUCCESS_WITH_HINT : OutcomeEnum.SUCCESS);
+                    gs2.outcome = outcome;
+                    setGameState(gs2);
+                    setUIState({ voiceState: VoiceStateEnum.IDLE });
+                    completeScene(outcome);
+                    if (fromVoice) trackEvent('voice_interaction_completed', { scene: sceneId });
+                    else trackEvent('text_interaction_completed', { scene: sceneId });
+                } else {
+                    setGameState(gs2);
+                    setUIState({ voiceState: VoiceStateEnum.IDLE });
+                    if (checkAssistedShouldTrigger()) {
+                        var gs3 = appState.gameState;
+                        gs3.assistedTriggered = true;
+                        gs3.assistedUsed = true;
+                        gs3.hintLevel = 3;
+                        setGameState(gs3);
+                        setUIState({ showHint: true });
+                    }
+                }
+            }).catch(function() {
+                setUIState({ voiceState: VoiceStateEnum.IDLE, error: '对话暂时出了点问题，请再试一次。' });
+            });
+        }
+
+        function handleVoiceButton() {
+            var gs = appState.gameState;
+            var vs = appState.uiState.voiceState;
+
+            if (vs === VoiceStateEnum.IDLE) {
+                setUIState({ voiceState: VoiceStateEnum.RECORDING, error: null });
+                voiceTimer = setTimeout(function() {
+                    if (appState.uiState.voiceState === VoiceStateEnum.RECORDING) {
+                        finishRecording();
+                    }
+                }, 1200);
+            } else if (vs === VoiceStateEnum.RECORDING) {
+                clearTimeout(voiceTimer);
+                finishRecording();
+            } else if (vs === VoiceStateEnum.ERROR) {
+                setUIState({ voiceState: VoiceStateEnum.IDLE, error: null });
+            }
+        }
+
+        function finishRecording() {
+            var gs = appState.gameState;
+            setUIState({ voiceState: VoiceStateEnum.TRANSCRIBING });
+            appState.speechToTextProvider.transcribe(null, gs.currentScene || 'hostel').then(function(text) {
+                setUIState({ voiceState: VoiceStateEnum.PROCESSING });
+                handlePlayerSubmission(text, true);
+            }).catch(function() {
+                setUIState({ voiceState: VoiceStateEnum.ERROR, error: '没听清，再试一次。' });
+                setTimeout(function() {
+                    if (appState.uiState.voiceState === VoiceStateEnum.ERROR) {
+                        setUIState({ voiceState: VoiceStateEnum.IDLE });
+                    }
+                }, 1500);
+            });
+        }
+
+        function handleTextSubmit() {
+            var text = appState.uiState.inputValue;
+            if (!text.trim()) return;
+            handlePlayerSubmission(text, false);
+            if (!appState.gameState.textNudgeShown) {
+                var gs = appState.gameState;
+                gs.textNudgeShown = true;
+                setTextNudgeShown();
+                setGameState(gs);
+            }
+        }
+
+        function handleThailandClick() {
+            trackEvent('thailand_fake_door_clicked');
+            setUIState({ modal: { title: '🇹🇭 泰国', text: '泰国篇正在开发中。敬请期待！' } });
+        }
+
+        function handleSupportClick() {
+            trackEvent('support_clicked');
+            var gs = appState.gameState;
+            gs.currentState = StateEnum.SUPPORT;
+            setGameState(gs);
+        }
+
+        function handleReplayClick() {
+            trackEvent('replay_clicked');
+            clearGameState();
+            var gs = createInitialGameState();
+            gs.currentState = StateEnum.DESTINATION_SELECT;
+            gs.textNudgeShown = loadTextNudgeShown();
+            setGameState(gs);
+            setUIState({ showHint: false, inputValue: '', voiceState: VoiceStateEnum.IDLE, error: null, modal: null });
+        }
+
+        function handleSelectVietnam() {
+            var gs = appState.gameState;
+            gs.destination = 'vietnam';
+            gs.currentState = StateEnum.DEPARTURE_SETUP;
+            setGameState(gs);
+        }
+
+        function handleBudgetSelect(budget) {
+            var gs = appState.gameState;
+            gs.budget = budget;
+            setGameState(gs);
+        }
+
+        function handleDeparture() {
+            var gs = appState.gameState;
+            gs.currentState = StateEnum.VOICE_PERMISSION_PREFLIGHT;
+            setGameState(gs);
+        }
+
+        function handleVoicePermission(choice) {
+            var gs = appState.gameState;
+            gs.voicePermissionAsked = true;
+            gs.voicePermissionGranted = (choice === 'enable');
+            gs.currentState = StateEnum.TRANSITION;
+            setGameState(gs);
+        }
+
+        function handleTransitionComplete() {
+            startScene(0);
+        }
+
+        function handleDismissModal() {
+            setUIState({ modal: null });
+        }
+
+        // ============================================================
+        // 渲染
+        // ============================================================
+        function render() {
+            if (!appState.uiState.booted) {
+                renderBoot();
+                return;
+            }
+            var gs = appState.gameState;
+            switch (gs.currentState) {
+                case StateEnum.BOOT: renderBoot(); break;
+                case StateEnum.MAIN_MENU: renderMainMenu(); break;
+                case StateEnum.DESTINATION_SELECT: renderDestinationSelect(); break;
+                case StateEnum.DEPARTURE_SETUP: renderDepartureSetup(); break;
+                case StateEnum.VOICE_PERMISSION_PREFLIGHT: renderVoicePermission(); break;
+                case StateEnum.TRANSITION: renderTransition(); break;
+                case StateEnum.HOSTEL:
+                case StateEnum.RESTAURANT: renderMission(); break;
+                case StateEnum.HOSTEL_FEEDBACK:
+                    renderSceneFeedback('住宿问题解决了。', '你成功向前台解释了预订情况，拿到了房间钥匙。', '继续旅行', advanceFromFeedback);
+                    break;
+                case StateEnum.RESTAURANT_FEEDBACK:
+                    renderSceneFeedback('点餐问题解决了。', '你成功和餐厅沟通，换到了想吃的菜。', '查看章节完成', advanceFromFeedback);
+                    break;
+                case StateEnum.CHAPTER_COMPLETE: renderChapterComplete(); break;
+                case StateEnum.SUPPORT: renderSupport(); break;
+                default: renderBoot();
+            }
+            renderModal();
+        }
+
+        function renderBoot() {
+            appEl.innerHTML = '<div class="screen no-scroll" style="align-items:center;justify-content:center;"><div style="text-align:center;"><div class="pixel-title" style="font-size:2rem;">ENGLISH WORLD</div><div class="pixel-subtitle" style="margin-top:8px;">Loading...</div></div></div>';
+        }
+
+        function renderMainMenu() {
+            var hasSave = !!loadGameState();
+            appEl.innerHTML = '<div class="screen"><div class="menu-container"><div class="logo-area"><div class="main-logo">ENGLISH WORLD</div><div class="tagline">一场用英语完成的旅行</div></div><button class="btn btn-primary" id="btn-start">🌏 开始旅行</button>' +
+                (hasSave ? '<button class="btn btn-secondary" id="btn-continue">📂 继续旅程</button>' : '') +
+                '<div style="text-align:center;margin-top:20px;color:var(--text-muted);font-size:0.7rem;letter-spacing:1px;">RETRO · PIXEL · ADVENTURE</div></div></div>';
+            document.getElementById('btn-start').addEventListener('click', startNewGame);
+            var btnContinue = document.getElementById('btn-continue');
+            if (btnContinue) btnContinue.addEventListener('click', continueJourney);
+        }
+
+        function renderDestinationSelect() {
+            appEl.innerHTML = '<div class="screen"><div style="margin-bottom:16px;"><div class="pixel-subtitle">选择你的第一站</div></div>' +
+                '<div class="dest-card vietnam" id="dest-vietnam"><div style="display:flex;align-items:center;gap:12px;"><span class="flag">🇻🇳</span><div><div class="name">越南</div><div style="font-size:0.8rem;color:var(--green);font-weight:600;">第一章：可游玩</div></div></div><div style="margin-top:8px;"><button class="btn btn-primary btn-small" style="pointer-events:none;">开始准备 →</button></div></div>' +
+                '<div class="dest-card thailand" id="dest-thailand" style="margin-top:12px;"><div style="display:flex;align-items:center;gap:12px;"><span class="flag">🇹🇭</span><div><div class="name">泰国</div><div style="font-size:0.8rem;color:var(--text-muted);">敬请期待</div></div></div><div style="margin-top:8px;"><button class="btn btn-ghost btn-small" style="pointer-events:none;">查看 →</button></div></div></div>';
+            document.getElementById('dest-vietnam').addEventListener('click', handleSelectVietnam);
+            document.getElementById('dest-thailand').addEventListener('click', handleThailandClick);
+        }
+
+        function renderDepartureSetup() {
+            var gs = appState.gameState;
+            var budgets = ['经济', '标准', '舒适'];
+            var keys = ['economy', 'standard', 'comfort'];
+            appEl.innerHTML = '<div class="screen"><div style="margin-bottom:16px;"><div class="pixel-subtitle">出发准备</div></div><div class="card"><div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;"><span style="font-size:1.5rem;">🇻🇳</span><span style="font-weight:700;font-size:1.1rem;">越南</span></div><div style="margin-bottom:8px;color:var(--text-secondary);font-size:0.9rem;">旅行预算</div><div class="budget-options" id="budget-options">' +
+                budgets.map(function(b, i) {
+                    return '<button class="budget-option ' + (gs.budget === keys[i] ? 'selected' : '') + '" data-budget="' + keys[i] + '">' + b + '</button>';
+                }).join('') +
+                '</div><div style="margin-top:12px;color:var(--text-muted);font-size:0.8rem;">即将开始：中国 → 越南</div></div><button class="btn btn-primary" id="btn-depart">✈️ 出发</button></div>';
+            document.querySelectorAll('.budget-option').forEach(function(btn) {
+                btn.addEventListener('click', function() { handleBudgetSelect(btn.dataset.budget); });
+            });
+            document.getElementById('btn-depart').addEventListener('click', handleDeparture);
+        }
+
+        function renderVoicePermission() {
+            appEl.innerHTML = '<div class="screen"><div class="card card-accent"><div style="font-size:1.5rem;margin-bottom:10px;">🎤</div><div style="font-size:1.1rem;font-weight:700;margin-bottom:10px;">准备用英语交流</div><div style="font-size:0.9rem;color:var(--text-secondary);line-height:1.6;">接下来，你会直接用英语和旅途中的角色交流。如果你想使用语音，需要开启麦克风权限。</div></div><button class="btn btn-primary" id="btn-enable-voice" style="margin-bottom:10px;">🎤 开启语音</button><button class="btn btn-secondary" id="btn-text-only">⌨️ 稍后使用文字</button></div>';
+            document.getElementById('btn-enable-voice').addEventListener('click', function() { handleVoicePermission('enable'); });
+            document.getElementById('btn-text-only').addEventListener('click', function() { handleVoicePermission('later'); });
+        }
+
+        function renderTransition() {
+            appEl.innerHTML = '<div class="screen no-scroll" style="align-items:center;justify-content:center;text-align:center;"><div class="transition-plane">✈️</div><div class="transition-text">飞往越南...</div><div style="margin-top:20px;color:var(--text-muted);font-size:0.8rem;">China → Vietnam</div></div>';
+            setTimeout(function() {
+                if (appState.gameState.currentState === StateEnum.TRANSITION) {
+                    handleTransitionComplete();
+                }
+            }, 2500);
+        }
+
+        function renderMission() {
+            var gs = appState.gameState;
+            var ui = appState.uiState;
+            var sceneId = gs.currentScene;
+            var config = CHECKLIST_CONFIG[sceneId];
+            if (!config) return;
+
+            var total = getTotalChecklist(sceneId);
+            var completed = getCompletedCount(gs.checklistProgress, sceneId);
+            var dotsHtml = '';
+            for (var i = 0; i < total; i++) {
+                dotsHtml += '<span class="checklist-dot' + (i < completed ? ' done' : '') + '"></span>';
+            }
+
+            var convHtml = gs.conversationHistory.map(function(msg) {
+                var isNpc = msg.role === 'npc';
+                var label = isNpc ? (sceneId === 'hostel' ? '前台 Receptionist' : '服务员 Waiter') : '你 You';
+                return '<div class="' + (isNpc ? 'npc-bubble' : 'player-bubble') + '"><div class="bubble-label">' + label + '</div><div class="bubble-text">' + escapeHtml(msg.text) + '</div></div>';
+            }).join('');
+
+            var voiceLabel = '🎤 按住说英语';
+            var voiceClass = 'voice-btn';
+            if (ui.voiceState === VoiceStateEnum.RECORDING) {
+                voiceLabel = '🔴 正在录音... 松开结束';
+                voiceClass += ' recording';
+            } else if (ui.voiceState === VoiceStateEnum.TRANSCRIBING) {
+                voiceLabel = '⏳ 正在识别...';
+                voiceClass += ' transcribing';
+            } else if (ui.voiceState === VoiceStateEnum.PROCESSING) {
+                voiceLabel = '💭 对方正在回应...';
+                voiceClass += ' processing';
+            } else if (ui.voiceState === VoiceStateEnum.ERROR) {
+                voiceLabel = '⚠️ 没听清，点击重试';
+            }
+
+            var hintText = ui.showHint ? getCurrentHint(sceneId, gs.hintLevel) : '';
+            var hintPanelHtml = hintText ? '<div class="hint-panel"><div class="hint-label">💡 提示 Hint ' + gs.hintLevel + ' / 3</div><div class="hint-text">' + escapeHtml(hintText) + '</div></div>' : '';
+
+            var errorHtml = ui.error ? '<div class="error-banner">' + escapeHtml(ui.error) + '</div>' : '';
+
+            var assistedNote = (gs.assistedTriggered && !isChecklistComplete(gs.checklistProgress, sceneId, true)) ?
+                '<div style="font-size:0.75rem;color:var(--accent);margin-top:4px;">🌟 辅助模式已开启，参考上面的表达，用自己的话再说一次。</div>' : '';
+
+            var nudgeHtml = (!gs.textNudgeShown && !gs.voicePermissionGranted) ?
+                '<div style="font-size:0.8rem;color:var(--text-muted);text-align:center;padding:4px;">你也可以直接说英语 🎤 语音会让这次旅行更有临场感。</div>' : '';
+
+            appEl.innerHTML = '<div class="screen"><div class="mission-header"><div class="mission-title">📋 ' + escapeHtml(config.missionName) + '</div><div class="mission-situation">当前情况：' + escapeHtml(config.situation) + '</div><div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;"><div class="checklist-dots">' + dotsHtml + '</div><span class="progress-text">' + completed + ' / ' + total + '</span></div></div>' +
+                hintPanelHtml + errorHtml + assistedNote +
+                '<div class="conversation-area" id="conv-area">' + convHtml + '</div>' +
+                '<div class="input-area">' + nudgeHtml +
+                '<button class="' + voiceClass + '" id="btn-voice">' + voiceLabel + '</button>' +
+                '<div class="text-input-row"><input class="text-input" id="text-input" type="text" placeholder="⌨️ 输入英语..." value="' + escapeHtml(ui.inputValue) + '" autocomplete="off" /><button class="btn btn-small btn-secondary" id="btn-send" style="min-height:48px;padding:0 14px;">发送</button></div>' +
+                '<div style="display:flex;gap:8px;"><button class="hint-btn" id="btn-hint" style="flex:1;">💡 获取提示</button><button class="hint-btn" id="btn-reset-scene" style="flex:0 0 auto;padding:6px 10px;">↻</button></div></div></div>';
+
+            var voiceBtn = document.getElementById('btn-voice');
+            voiceBtn.addEventListener('click', handleVoiceButton);
+            voiceBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                if (appState.uiState.voiceState === VoiceStateEnum.IDLE) {
+                    handleVoiceButton();
+                }
+            });
+            voiceBtn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                if (appState.uiState.voiceState === VoiceStateEnum.RECORDING) {
+                    handleVoiceButton();
+                }
+            });
+
+            var inputEl = document.getElementById('text-input');
+            inputEl.addEventListener('input', function(e) { appState.uiState.inputValue = e.target.value; });
+            inputEl.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') { e.preventDefault(); handleTextSubmit(); }
+            });
+
+            document.getElementById('btn-send').addEventListener('click', handleTextSubmit);
+            document.getElementById('btn-hint').addEventListener('click', triggerHint);
+            document.getElementById('btn-reset-scene').addEventListener('click', function() {
+                if (gs.sceneIndex >= 0) startScene(gs.sceneIndex);
+            });
+
+            var convArea = document.getElementById('conv-area');
+            if (convArea) convArea.scrollTop = convArea.scrollHeight;
+        }
+
+        function renderSceneFeedback(title, detail, nextLabel, onNext) {
+            var gs = appState.gameState;
+            var outcomeText = '';
+            if (gs.outcome === OutcomeEnum.SUCCESS) outcomeText = '✓ 你独立完成了交流。';
+            else if (gs.outcome === OutcomeEnum.SUCCESS_WITH_HINT) outcomeText = '✓ 你在提示帮助下解决了问题。';
+            else if (gs.outcome === OutcomeEnum.ASSISTED) outcomeText = '✓ 你在辅助模式下完成了交流。';
+
+            appEl.innerHTML = '<div class="screen no-scroll"><div class="scene-feedback"><div class="icon">✅</div><div class="title">' + escapeHtml(title) + '</div><div style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:8px;">' + escapeHtml(detail) + '</div><div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:16px;">' + outcomeText + '</div><button class="btn btn-primary" id="btn-next">' + escapeHtml(nextLabel) + ' →</button></div></div>';
+            document.getElementById('btn-next').addEventListener('click', onNext);
+        }
+
+        function renderChapterComplete() {
+            appEl.innerHTML = '<div class="screen"><div class="chapter-complete-screen"><div class="trophy">🎉</div><div class="title">第一章完成！</div><div style="color:var(--text-secondary);font-size:0.9rem;line-height:1.6;">你已经完成了第一次海外旅行中的：</div><div class="chapter-summary-list"><div class="chapter-summary-item"><span class="check">✓</span> 出发准备</div><div class="chapter-summary-item"><span class="check">✓</span> 抵达目的地</div><div class="chapter-summary-item"><span class="check">✓</span> 解决住宿问题</div><div class="chapter-summary-item"><span class="check">✓</span> 在餐厅完成交流</div></div><div style="color:var(--text-secondary);font-size:0.85rem;line-height:1.6;margin-top:8px;">你的英语真的帮助你完成了这次旅程。</div><div class="divider"></div><div style="color:var(--text-muted);font-size:0.8rem;line-height:1.6;">更多故事正在开发中……<br>如果你觉得这个游戏有意思，并且觉得它对英语学习有帮助，请给我们一个 ❤️ 支持。</div><button class="btn btn-primary" id="btn-support" style="margin-top:12px;">❤️ 点赞支持</button><button class="btn btn-secondary" id="btn-replay" style="margin-top:8px;">🗺️ 再玩一次</button></div></div>';
+            document.getElementById('btn-support').addEventListener('click', handleSupportClick);
+            document.getElementById('btn-replay').addEventListener('click', handleReplayClick);
+        }
+
+        function renderSupport() {
+            appEl.innerHTML = '<div class="screen"><div class="scene-feedback"><div class="icon">❤️</div><div class="title" style="color:var(--accent);">感谢你的支持！</div><div style="color:var(--text-secondary);font-size:0.9rem;line-height:1.6;margin-bottom:16px;">你的反馈会帮助我们了解这个方向是否值得继续，也会帮助我们更快开发后面的内容。</div><button class="btn btn-primary" id="btn-back-menu">回到主菜单</button><button class="btn btn-secondary" id="btn-replay-support" style="margin-top:8px;">🗺️ 再玩一次</button></div></div>';
+            document.getElementById('btn-back-menu').addEventListener('click', function() {
+                var gs = appState.gameState;
+                gs.currentState = StateEnum.MAIN_MENU;
+                setGameState(gs);
+            });
+            document.getElementById('btn-replay-support').addEventListener('click', handleReplayClick);
+        }
+
+        function renderModal() {
+            var modal = appState.uiState.modal;
+            var existing = document.querySelector('.modal-overlay');
+            if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
+            if (!modal) return;
+            var overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            overlay.innerHTML = '<div class="modal-content"><div class="modal-title">' + escapeHtml(modal.title) + '</div><div class="modal-text">' + escapeHtml(modal.text) + '</div><button class="btn btn-primary" id="modal-close">知道了</button></div>';
+            overlay.addEventListener('click', function(e) { if (e.target === overlay) handleDismissModal(); });
+            appEl.appendChild(overlay);
+            document.getElementById('modal-close').addEventListener('click', handleDismissModal);
+        }
+
+        // ============================================================
+        // 启动
+        // ============================================================
+        function boot() {
+            var saved = loadGameState();
+            if (saved && saved.currentState && saved.currentState !== StateEnum.BOOT) {
+                var gs = createInitialGameState();
+                Object.keys(saved).forEach(function(k) { gs[k] = saved[k]; });
+                gs.textNudgeShown = loadTextNudgeShown();
+                if (!gs.conversationHistory) gs.conversationHistory = [];
+                if (!gs.checklistProgress) gs.checklistProgress = {};
+                gs.assistedAttempts = gs.assistedAttempts || 0;
+                appState.gameState = gs;
+            } else {
+                appState.gameState.currentState = StateEnum.MAIN_MENU;
+            }
+            appState.uiState.booted = true;
+            render();
+        }
+
+        boot();
+    })();
+    </script>
+</body>
+</html>
